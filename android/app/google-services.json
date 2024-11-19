@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "122159476644",
+    "firebase_url": "https://shenbaga-temple-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "shenbaga-temple",
+    "storage_bucket": "shenbaga-temple.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122159476644:android:1d82cb478fc6924c80db31",
+        "android_client_info": {
+          "package_name": "com.srisoftwarez.shenbagakutty_vagaiyara"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122159476644-8iem7jd961h27s1vulusm2985bgq724u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYs6S7wuBrg6_lvzZrkoG_jHhtcGA3_9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122159476644-8iem7jd961h27s1vulusm2985bgq724u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "122159476644-4vh8gdvuugs3v1j7p0s4esieqiplsg5b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shenbagakutty.vagaiyara"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

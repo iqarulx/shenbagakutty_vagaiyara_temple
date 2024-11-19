@@ -1,0 +1,33 @@
+[02-Aug-2023 05:00:23 UTC] PHP Warning:  include(../admin_temple_13122022/include/label.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 9
+[02-Aug-2023 05:00:23 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/label.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 9
+[02-Aug-2023 05:00:23 UTC] PHP Warning:  include(../admin_temple_13122022/include/functions.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 10
+[02-Aug-2023 05:00:23 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/functions.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 10
+[02-Aug-2023 05:00:23 UTC] PHP Warning:  include(../admin_temple_13122022/include/validation.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 11
+[02-Aug-2023 05:00:23 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/validation.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 11
+[02-Aug-2023 05:00:23 UTC] PHP Fatal error:  Uncaught Error: Class 'Core_Functions' not found in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php:14
+Stack trace:
+#0 /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/receipt_form/mudi_kaanikai/print.php(3): include()
+#1 {main}
+  thrown in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 14
+[02-Aug-2023 06:25:54 UTC] PHP Warning:  include(../admin_temple_13122022/include/label.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 9
+[02-Aug-2023 06:25:54 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/label.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 9
+[02-Aug-2023 06:25:54 UTC] PHP Warning:  include(../admin_temple_13122022/include/functions.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 10
+[02-Aug-2023 06:25:54 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/functions.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 10
+[02-Aug-2023 06:25:54 UTC] PHP Warning:  include(../admin_temple_13122022/include/validation.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 11
+[02-Aug-2023 06:25:54 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/validation.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 11
+[02-Aug-2023 06:25:54 UTC] PHP Fatal error:  Uncaught Error: Class 'Core_Functions' not found in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php:14
+Stack trace:
+#0 /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/receipt_form/mudi_kaanikai/print.php(3): include()
+#1 {main}
+  thrown in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 14
+[02-Aug-2023 06:30:40 UTC] PHP Warning:  include(../admin_temple_13122022/include/label.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 9
+[02-Aug-2023 06:30:40 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/label.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 9
+[02-Aug-2023 06:30:40 UTC] PHP Warning:  include(../admin_temple_13122022/include/functions.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 10
+[02-Aug-2023 06:30:40 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/functions.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 10
+[02-Aug-2023 06:30:40 UTC] PHP Warning:  include(../admin_temple_13122022/include/validation.php): failed to open stream: No such file or directory in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 11
+[02-Aug-2023 06:30:40 UTC] PHP Warning:  include(): Failed opening '../admin_temple_13122022/include/validation.php' for inclusion (include_path='.:/opt/alt/php74/usr/share/pear') in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 11
+[02-Aug-2023 06:30:40 UTC] PHP Fatal error:  Uncaught Error: Class 'Core_Functions' not found in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php:14
+Stack trace:
+#0 /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/receipt_form/mudi_kaanikai/print.php(3): include()
+#1 {main}
+  thrown in /home/h2pil1aoovs5/public_html/mahendran2022/temple/API/include.php on line 14
