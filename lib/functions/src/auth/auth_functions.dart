@@ -1,4 +1,4 @@
-import '../../../services/api/src/routes/auth_service.dart';
+import '/services/services.dart';
 import '/model/model.dart';
 
 class AuthFunctions {

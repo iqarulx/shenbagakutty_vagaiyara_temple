@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '/constants/constants.dart';
-import '../config.dart';
+import '/services/services.dart';
 
 class MandapamService {
   static final String _apiUrl = Config.apiUrl;

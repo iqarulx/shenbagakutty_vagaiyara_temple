@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shenbagakutty_vagaiyara/constants/src/enum.dart';
 
-import '../../model/model.dart';
+import '/model/model.dart';
 
 class Db {
   Db._internal();

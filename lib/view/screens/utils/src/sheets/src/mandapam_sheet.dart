@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/functions/functions.dart';
-import '/view./view.dart';
+import '/view/view.dart';
 
 class MandapamModel {
   final String name;

@@ -11,7 +11,7 @@ import 'package:iconsax/iconsax.dart';
 
 import '/functions/functions.dart';
 import '/services/services.dart';
-import '../../view.dart';
+import '/view/view.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

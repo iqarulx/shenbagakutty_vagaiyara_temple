@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shenbagakutty_vagaiyara/utils/src/file_utils.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
-import '../../../view.dart';
+import '/view/view.dart';
 
 class PdfView extends StatefulWidget {
   final String uri, name;

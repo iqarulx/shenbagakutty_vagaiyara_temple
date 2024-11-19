@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart'
     as path_provider_interface;
 import 'package:url_launcher/url_launcher.dart';
-import '../../services/services.dart';
+import '/services/services.dart';
 
 Future launchFile(
     {required List<int> bt,

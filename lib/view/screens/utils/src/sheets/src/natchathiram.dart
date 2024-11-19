@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/view./view.dart';
+import '/view/view.dart';
 
 class NatchathiramModel {
   final String rasi;
