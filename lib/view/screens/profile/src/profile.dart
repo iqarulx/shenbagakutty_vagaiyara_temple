@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shimmer/shimmer.dart';
 import '/functions/functions.dart';
@@ -65,15 +66,29 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         title: const Text("Profile"),
         actions: [
           IconButton(
-            icon: const Icon(Iconsax.edit),
-            tooltip: "Edit",
+            icon: const Icon(Iconsax.refresh),
+            tooltip: "Refresh",
             onPressed: () {
-              Navigator.push(
+              _profileHanlder = _getProfile();
+              setState(() {});
+            },
+          ),
+          IconButton(
+            icon: SvgPicture.asset(SvgAssets.pencil),
+            tooltip: "Edit",
+            onPressed: () async {
+              var r = await Navigator.push(
                 context,
                 CupertinoPageRoute(
                   builder: (context) => ProfileEdit(profileData: _profileData),
                 ),
               );
+              if (r != null) {
+                if (r) {
+                  _profileHanlder = _getProfile();
+                  setState(() {});
+                }
+              }
             },
           ),
         ],
@@ -117,7 +132,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                   ),
                 ),
                 Positioned(
-                  top: 140,
+                  top: 130,
                   left: 10,
                   child: Container(
                     padding: const EdgeInsets.all(3),

@@ -27,4 +27,5 @@ class SvgAssets {
   static const String chart = 'assets/svg/chart.svg';
   static const String tick = 'assets/svg/tick.svg';
   static const String qr = 'assets/svg/qr.svg';
+  static const String pencil = 'assets/svg/pencil.svg';
 }

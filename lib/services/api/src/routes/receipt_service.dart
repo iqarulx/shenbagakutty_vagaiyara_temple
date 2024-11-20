@@ -48,9 +48,6 @@ class ReceiptService {
         uri = null;
       }
       if (uri != null) {
-        print(uri);
-        print(json.encode(queryParameters));
-
         final response =
             await http.post(uri, body: json.encode(queryParameters));
         if (response.statusCode == 200) {
@@ -103,7 +100,6 @@ class ReceiptService {
         "page_limit": pageLimit
       };
       final uri = Uri.parse("$_apiUrl/$_route");
-      print(json.encode(queryParameters));
       final response = await http.post(uri, body: json.encode(queryParameters));
       if (response.statusCode == 200) {
         if (response.body.isNotEmpty) {

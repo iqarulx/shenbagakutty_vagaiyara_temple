@@ -1,12 +1,14 @@
 // ignore_for_file: unused_field
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
+import 'package:shenbagakutty_vagaiyara/model/model.dart';
 import 'package:shimmer/shimmer.dart';
 import '/constants/constants.dart';
 import '/functions/functions.dart';
@@ -24,54 +26,6 @@ class ProfileEdit extends StatefulWidget {
 
 class _ProfileEditState extends State<ProfileEdit>
     with TickerProviderStateMixin {
-  final TextEditingController _memberName = TextEditingController();
-  final TextEditingController _initial = TextEditingController();
-  final TextEditingController _rasi = TextEditingController();
-  String? _selectedRasi;
-  final TextEditingController _natchathiram = TextEditingController();
-  String? _selectedNatchathiram;
-  final TextEditingController _profession = TextEditingController();
-  String? _selectedProfessionId;
-  final TextEditingController _wifeName = TextEditingController();
-  final TextEditingController _wifeEducation = TextEditingController();
-  final TextEditingController _wifeRasi = TextEditingController();
-  String? _selectedWifeRasi;
-  final TextEditingController _wifeNatchathiram = TextEditingController();
-  String? _selectedWifeNatchathiram;
-  final TextEditingController _fatherId = TextEditingController();
-  final TextEditingController _fatherName = TextEditingController();
-  final TextEditingController _familyOrder = TextEditingController();
-  final TextEditingController _introducerId = TextEditingController();
-  final TextEditingController _introducerRelationship = TextEditingController();
-  final TextEditingController _status = TextEditingController();
-  final TextEditingController _phoneNumber = TextEditingController();
-  final TextEditingController _mobileNumber = TextEditingController();
-  final TextEditingController _adhaarNumber = TextEditingController();
-  final TextEditingController _country = TextEditingController();
-  final TextEditingController _state = TextEditingController();
-  final TextEditingController _city = TextEditingController();
-  final TextEditingController _address = TextEditingController();
-  final TextEditingController _pincode = TextEditingController();
-  final TextEditingController _companyName = TextEditingController();
-  final TextEditingController _remarks = TextEditingController();
-  final TextEditingController _history = TextEditingController();
-
-  String? _selectedCountryIndex;
-  String _doj = ""; // Date of joining
-  String _dod = ""; // Date of deletion
-  String _dor = ""; // Date of rejoin
-  String? _profilePhoto;
-  String? _wifePhoto;
-  List<String>? _familyPhoto;
-
-  final List<ChildView> _childList = [];
-
-  File? _selectedProfilePhoto;
-  File? _selectedWifePhoto;
-  File? _selectedFamilyPhoto1;
-  File? _selectedFamilyPhoto2;
-  File? _selectedFamilyPhoto3;
-
   @override
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
@@ -130,6 +84,9 @@ class _ProfileEditState extends State<ProfileEdit>
     }
   }
 
+  List<ChildModel> childList = [];
+  List<File?> selectedChildPhoto = [];
+
   _init() async {
     var data = widget.profileData;
     _memberName.text = data["initial"].toString();
@@ -183,68 +140,58 @@ class _ProfileEditState extends State<ProfileEdit>
 
     for (var d = 0; d < data["children"].length; d++) {
       var i = data["children"][d];
-      var controllerMap = {
-        "childName":
-            TextEditingController(text: i["member_child_name"].toString()),
-        "childEducation":
-            TextEditingController(text: i["member_child_education"].toString()),
-        "childJob":
-            TextEditingController(text: i["member_child_job"].toString()),
-        "childInitial":
-            TextEditingController(text: i["member_child_initial"].toString()),
-        "childDob": TextEditingController(
-            text: i["member_child_birth_date"].toString()),
-        "childRasi": TextEditingController(),
-        "childNatchathiram": TextEditingController(),
-        "childMobileNumber": TextEditingController(
-            text: i["member_child_mobile_number"].toString()),
-        "lifePartnerName": TextEditingController(
-            text: i["member_child_partner_name"].toString()),
-        "lifePatnerEducation": TextEditingController(
-            text: i["member_child_partner_education"].toString()),
-        "lifePatnerDob": TextEditingController(
-            text: i["member_child_partner_birth_date"].toString()),
-        "marriageDate": TextEditingController(
-            text: i["member_child_marriage_date"].toString()),
-        "lifePartnerRasi": TextEditingController(),
-        "lifePartnerNatchathiram": TextEditingController(),
-      };
-      _childControllers.add(controllerMap);
-      String id = i["member_child_id"];
-      radioSelections["${id}_gender"] = i["member_child_gender"].toString();
-      radioSelections["${id}_marriageStatus"] =
-          i["member_child_marriage_status"].toString();
+      selectedChildPhoto.add(null);
 
-      _childList.add(
-        ChildView(
-          id: id,
-          controllers: controllerMap,
-          childMarrigeStatus: i["member_child_marriage_status"].toString(),
+      childList.add(
+        ChildModel(
+          id: i["member_child_id"].toString(),
+          profilePhotoEdit: true,
+          childNameController:
+              TextEditingController(text: i["member_child_name"].toString()),
+          childEducationController: TextEditingController(
+              text: i["member_child_education"].toString()),
+          childJobController:
+              TextEditingController(text: i["member_child_job"].toString()),
+          childInitialController:
+              TextEditingController(text: i["member_child_initial"].toString()),
+          childDobController: TextEditingController(
+              text: i["member_child_birth_date"].toString()),
+          childRasiController: TextEditingController(
+              text: UtilsFunctions.getRasiTamilName(
+                  rasi: i["member_child_rasi"].toString())),
+          childNatchathiramController: TextEditingController(
+              text: UtilsFunctions.getNatchathiramTamilName(
+                  natchathiram: i["member_child_natchathiram"].toString())),
+          childMobileNumberController: TextEditingController(
+              text: i["member_child_mobile_number"].toString()),
+          lifePartnerNameController: TextEditingController(
+              text: i["member_child_partner_name"].toString()),
+          lifePatnerEducationController: TextEditingController(
+              text: i["member_child_partner_education"].toString()),
+          marriageDateController: TextEditingController(
+              text: i["member_child_marriage_date"].toString()),
+          lifePartnerRasiController: TextEditingController(
+              text: UtilsFunctions.getRasiTamilName(
+                  rasi: i["member_child_partner_rasi"].toString())),
+          lifePartnerNatchathiramController: TextEditingController(
+              text: UtilsFunctions.getNatchathiramTamilName(
+                  natchathiram:
+                      i["member_child_partner_natchathiram"].toString())),
+          lifePartnerDobController: TextEditingController(
+              text: i["member_child_partner_birth_date"].toString()),
           childGender: i["member_child_gender"].toString(),
+          childMarrigeStatus: i["member_child_marriage_status"].toString(),
           selectedChildRasi: i["member_child_rasi"].toString(),
           selectedChildNatchathiram: i["member_child_natchathiram"].toString(),
           selectedLifePartnerRasi: i["member_child_partner_rasi"].toString(),
           selectedLifePartnerNatchathiram:
               i["member_child_partner_natchathiram"].toString(),
-          radioSelections: radioSelections,
-          indexRemove: () {
-            setState(() {
-              // _childControllers.remove(controllerMap);
-              // _childList.removeWhere((child) => child == controllerMap);
-            });
-          },
-          onRadioSelectionChanged: (key, value) {
-            radioSelections[key] = value;
-            setState(() {});
-          },
         ),
       );
     }
   }
 
   TabController? _tabController;
-  final List<Map<String, TextEditingController>> _childControllers = [];
-  final Map<String, dynamic> radioSelections = {};
 
   _saveProfile() async {
     try {
@@ -297,68 +244,47 @@ class _ProfileEditState extends State<ProfileEdit>
           "creator": memberId,
           "creator_name": memberName,
         };
-        List<Map<String, dynamic>> childList = [];
 
-        for (var i = 0; i < _childControllers.length; i++) {
+        var childMapDetails = [];
+
+        for (var i = 0; i < childList.length; i++) {
           var childDetails = {
-            "child1_id": _childList[i].id,
-            "child1_initial": _childControllers[i]["childInitial"]?.text,
-            "child1_name": _childControllers[i]["childName"]?.text,
-            "child1_gender": radioSelections["${_childList[i].id}_gender"],
-            "child1_dob": _childControllers[i]["childDob"]?.text,
-            "child1_rasi": UtilsFunctions.getRasiEnglishName(
-                rasi: _childControllers[i]["childRasi"]?.text ?? ''),
-            "child1_natchathiram": UtilsFunctions.getEnglishNatchathiramName(
-                natchathiram:
-                    _childControllers[i]["childNatchathiram"]?.text ?? ''),
-            "child1_education": _childControllers[i]["childEducation"]?.text,
-            "child1_job": "",
-            "child1_marital_status":
-                radioSelections["${_childList[i].id}_marriageStatus"],
-            "child1_mobile_number":
-                _childControllers[i]["childMobileNumber"]?.text,
-            "child1_photo": ""
+            "member_child${i}_id": childList[i].id ?? "",
+            "member_child${i}_initial":
+                childList[i].childInitialController.text,
+            "member_child${i}_name": childList[i].childNameController.text,
+            "member_child${i}_gender": childList[i].childGender ?? "",
+            "member_child${i}_birth_date": childList[i].childDobController.text,
+            "member_child${i}_rasi": childList[i].selectedChildRasi ?? "",
+            "member_child${i}_natchathiram":
+                childList[i].selectedChildNatchathiram ?? "",
+            "member_child${i}_education":
+                childList[i].childEducationController.text,
+            "member_child${i}_job": childList[i].childJobController.text,
+            "member_child${i}_marriage_status":
+                childList[i].childMarrigeStatus ?? "",
+            "member_child${i}_mobile_number":
+                childList[i].childMobileNumberController.text,
+            "member_child${i}_photo": "",
           };
-          if (radioSelections["${_childList[i].id}_gender"] == 1) {
-            childDetails["child1_wife_name"] =
-                _childControllers[i]["lifePartnerName"]?.text;
-            childDetails["child1_wife_education"] =
-                _childControllers[i]["lifePatnerEducation"]?.text;
-            childDetails["child1_wife_rasi"] =
-                UtilsFunctions.getRasiEnglishName(
-                    rasi: _childControllers[i]["lifePartnerRasi"]?.text ?? '');
-            childDetails["child1_wife_natchathiram"] =
-                UtilsFunctions.getEnglishNatchathiramName(
-              natchathiram:
-                  _childControllers[i]["lifePartnerNatchathiram"]?.text ?? '',
-            );
-            childDetails["child1_husband_name"] = "";
-            childDetails["child1_husband_education"] = "";
-            childDetails["child1_husband_rasi"] = "";
-            childDetails["child1_husband_natchathiram"] = "";
-          } else {
-            childDetails["child1_wife_name"] = "";
-            childDetails["child1_wife_education"] = "";
-            childDetails["child1_wife_rasi"] = "";
-            childDetails["child1_wife_natchathiram"] = "";
-            childDetails["child1_husband_name"] =
-                _childControllers[i]["lifePartnerName"]?.text;
-            childDetails["child1_husband_education"] =
-                _childControllers[i]["lifePatnerEducation"]?.text;
-            childDetails["child1_husband_rasi"] =
-                UtilsFunctions.getRasiEnglishName(
-                    rasi: _childControllers[i]["lifePartnerRasi"]?.text ?? '');
-            childDetails["child1_husband_natchathiram"] =
-                UtilsFunctions.getEnglishNatchathiramName(
-              natchathiram:
-                  _childControllers[i]["lifePartnerNatchathiram"]?.text ?? '',
-            );
-          }
 
-          childList.add(childDetails);
+          childDetails["member_child${i}_partner_name"] =
+              childList[i].lifePartnerNameController.text;
+          childDetails["member_child${i}_partner_education"] =
+              childList[i].lifePatnerEducationController.text;
+          childDetails["member_child${i}_partner_birth_date"] =
+              childList[i].lifePartnerDobController.text;
+          childDetails["member_child${i}_marriage_date"] =
+              childList[i].marriageDateController.text;
+          childDetails["member_child${i}_partner_rasi"] =
+              childList[i].selectedLifePartnerRasi ?? "";
+          childDetails["member_child${i}_partner_natchathiram"] =
+              childList[i].selectedLifePartnerNatchathiram ?? "";
+
+          childMapDetails.add(childDetails);
         }
 
-        updateData["children"] = childList;
+        updateData["children"] = childMapDetails;
       }
 
       await ProfileFunctions.updateProfile(query: updateData).then((value) {
@@ -368,8 +294,40 @@ class _ProfileEditState extends State<ProfileEdit>
       });
     } catch (e) {
       Navigator.pop(context);
+      print(e.toString());
       Snackbar.showSnackBar(context, content: e.toString(), isSuccess: false);
     }
+  }
+
+  _addNewChild() {
+    selectedChildPhoto.add(null);
+    childList.add(
+      ChildModel(
+        id: null,
+        profilePhotoEdit: false,
+        childNameController: TextEditingController(),
+        childEducationController: TextEditingController(),
+        childJobController: TextEditingController(),
+        childInitialController: TextEditingController(),
+        childDobController: TextEditingController(),
+        childRasiController: TextEditingController(),
+        childNatchathiramController: TextEditingController(),
+        childMobileNumberController: TextEditingController(),
+        lifePartnerNameController: TextEditingController(),
+        lifePatnerEducationController: TextEditingController(),
+        marriageDateController: TextEditingController(),
+        lifePartnerRasiController: TextEditingController(),
+        lifePartnerNatchathiramController: TextEditingController(),
+        lifePartnerDobController: TextEditingController(),
+        childGender: null,
+        childMarrigeStatus: null,
+        selectedChildRasi: null,
+        selectedChildNatchathiram: null,
+        selectedLifePartnerRasi: null,
+        selectedLifePartnerNatchathiram: null,
+      ),
+    );
+    setState(() {});
   }
 
   @override
@@ -377,6 +335,7 @@ class _ProfileEditState extends State<ProfileEdit>
     return Scaffold(
       appBar: _appbar(context),
       floatingActionButton: _floatingButton(),
+      bottomNavigationBar: bottomAppbar(context),
       body: TabBarView(
         controller: _tabController,
         children: [
@@ -389,10 +348,621 @@ class _ProfileEditState extends State<ProfileEdit>
     );
   }
 
+  _dobPicker(TextEditingController c) async {
+    final DateTime? picked = await datePicker(context);
+    if (picked != null) {
+      setState(() {
+        c.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
+
   ListView _childView() {
     return ListView(
       padding: const EdgeInsets.all(10),
-      children: [for (var i in _childList) i],
+      children: [
+        for (var i = 0; i < childList.length; i++)
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.pureWhiteColor,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Child Details",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  color: AppColors.blackColor,
+                                  fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          style: const ButtonStyle(
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          tooltip: "Remove Child",
+                          icon: const Icon(
+                            Iconsax.trash,
+                            color: Colors.red,
+                          ),
+                          onPressed: () async {
+                            var r = await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const CDialog(
+                                  title: "Remove",
+                                  content: "Are you sure want to remove child?",
+                                );
+                              },
+                            );
+                            if (r != null) {
+                              if (r) {
+                                childList.removeAt(i);
+                                setState(() {});
+                              }
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Stack(
+                      children: [
+                        ClipOval(
+                          child: selectedChildPhoto[i] != null
+                              ? Image.file(
+                                  selectedChildPhoto[i]!,
+                                  width: 150,
+                                  height: 150,
+                                )
+                              : CachedNetworkImage(
+                                  imageUrl: emptyProfilePhoto,
+                                  placeholder: (context, url) =>
+                                      Shimmer.fromColors(
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.grey.shade100,
+                                    child: Container(
+                                      width: 150,
+                                      height: 150,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  fit: BoxFit.contain,
+                                  width: 150,
+                                  height: 150,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                        ),
+                        if (childList[i].profilePhotoEdit)
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: IconButton(
+                                tooltip: "Edit",
+                                icon: const Icon(Icons.edit_rounded),
+                                onPressed: () async {
+                                  var v = await Sheet.showSheet(context,
+                                      size: 0.2, widget: const PickOption());
+                                  if (v != null) {
+                                    var pr = await PickImage.pickImage(v);
+                                    if (pr != null) {
+                                      selectedChildPhoto[i] = pr;
+                                      await ImageFunctions.uploadImage(context,
+                                          type: ImageType.child, file: pr);
+
+                                      setState(() {});
+                                    }
+                                  }
+                                },
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: FormFields(
+                            controller: childList[i].childInitialController,
+                            label: "Intial",
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: FormFields(
+                            controller: childList[i].childNameController,
+                            label: "Name",
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Gender",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: Text(
+                                  'Male',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                value: 'Male',
+                                groupValue: childList[i].childGender,
+                                activeColor: AppColors.primaryColor,
+                                onChanged: (v) {
+                                  childList[i].childGender = v;
+                                  setState(() {});
+                                },
+                                contentPadding: EdgeInsets.zero,
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: Text(
+                                  'Female',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                value: 'Female',
+                                activeColor: AppColors.primaryColor,
+                                groupValue: childList[i].childGender,
+                                onChanged: (v) {
+                                  childList[i].childGender = v;
+                                  setState(() {});
+                                },
+                                contentPadding: EdgeInsets.zero,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FormFields(
+                            controller: childList[i].childDobController,
+                            label: "Date of Birth",
+                            hintText: "dd-mm-yyyy",
+                            onTap: () =>
+                                _dobPicker(childList[i].childDobController),
+                            readOnly: true,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: FormFields(
+                            controller:
+                                childList[i].childMobileNumberController,
+                            label: "Mobile No",
+                            keyType: TextInputType.number,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FormFields(
+                            suffixIcon: childList[i]
+                                    .childRasiController
+                                    .text
+                                    .isEmpty
+                                ? const Icon(Icons.arrow_drop_down_rounded)
+                                : IconButton(
+                                    tooltip: "Clear",
+                                    onPressed: () {
+                                      childList[i].childRasiController.clear();
+                                      childList[i].selectedChildRasi = null;
+                                      childList[i]
+                                          .childNatchathiramController
+                                          .clear();
+                                      setState(() {});
+                                    },
+                                    icon: Icon(
+                                      Iconsax.close_circle,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                  ),
+                            controller: childList[i].childRasiController,
+                            label: "Rasi",
+                            hintText: "Select",
+                            onTap: () async {
+                              var value = await Sheet.showSheet(context,
+                                  size: 0.9, widget: const Rasi());
+                              if (value != null) {
+                                childList[i].childRasiController.text =
+                                    value["value"];
+                                childList[i].selectedChildRasi = value["id"];
+                                setState(() {});
+                              }
+                            },
+                            readOnly: true,
+                            // valid: (input) {
+                            //   if (input != null) {
+                            //     if (input.isEmpty) {
+                            //       return 'Select site';
+                            //     }
+                            //   }
+                            //   return null;
+                            // },
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: FormFields(
+                            suffixIcon: childList[i]
+                                    .childNatchathiramController
+                                    .text
+                                    .isEmpty
+                                ? const Icon(Icons.arrow_drop_down_rounded)
+                                : IconButton(
+                                    tooltip: "Clear",
+                                    onPressed: () {
+                                      childList[i]
+                                          .childNatchathiramController
+                                          .clear();
+                                      childList[i].selectedChildNatchathiram =
+                                          null;
+                                      setState(() {});
+                                    },
+                                    icon: Icon(
+                                      Iconsax.close_circle,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                  ),
+                            controller:
+                                childList[i].childNatchathiramController,
+                            label: "Natchathiram",
+                            hintText: "Select",
+                            onTap: () async {
+                              if (childList[i]
+                                  .childRasiController
+                                  .text
+                                  .isNotEmpty) {
+                                var value = await Sheet.showSheet(context,
+                                    size: 0.7,
+                                    widget: Natchathiram(
+                                        rasi: childList[i].selectedChildRasi ??
+                                            ''));
+                                if (value != null) {
+                                  childList[i]
+                                      .childNatchathiramController
+                                      .text = value["value"];
+                                  childList[i].selectedChildNatchathiram =
+                                      value["id"];
+                                  setState(() {});
+                                }
+                              }
+                            },
+                            // valid: (input) {
+                            //   if (input != null) {
+                            //     if (input.isEmpty) {
+                            //       return 'Select';
+                            //     }
+                            //   }
+                            //   return null;
+                            // },
+                            readOnly: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FormFields(
+                            controller: childList[i].childEducationController,
+                            label: "Education",
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: FormFields(
+                            controller: childList[i].childJobController,
+                            label: "Job",
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Marrige Status",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: Text(
+                                  'Yes',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                value: '1',
+                                groupValue: childList[i].childMarrigeStatus,
+                                activeColor: AppColors.primaryColor,
+                                onChanged: (v) {
+                                  childList[i].childMarrigeStatus = v;
+                                  setState(() {});
+                                },
+                                contentPadding: EdgeInsets.zero,
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: Text(
+                                  'No',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                value: '2',
+                                contentPadding: EdgeInsets.zero,
+                                activeColor: AppColors.primaryColor,
+                                groupValue: childList[i].childMarrigeStatus,
+                                onChanged: (v) {
+                                  childList[i].childMarrigeStatus = v;
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    if (childList[i].childMarrigeStatus != null &&
+                        childList[i].childMarrigeStatus == "1")
+                      Column(
+                        children: [
+                          const Divider(),
+                          const SizedBox(height: 5),
+                          Text(
+                            "Life Partner Details",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: AppColors.blackColor,
+                                    fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FormFields(
+                                  controller:
+                                      childList[i].lifePartnerNameController,
+                                  label: "Name",
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: FormFields(
+                                  controller: childList[i]
+                                      .lifePatnerEducationController,
+                                  label: "Education",
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FormFields(
+                                  controller:
+                                      childList[i].lifePartnerDobController,
+                                  label: "Date of Birth",
+                                  hintText: "dd-mm-yyyy",
+                                  onTap: () => _dobPicker(
+                                      childList[i].lifePartnerDobController),
+                                  readOnly: true,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: FormFields(
+                                  controller:
+                                      childList[i].marriageDateController,
+                                  label: "Marriage Date",
+                                  hintText: "dd-mm-yyyy",
+                                  onTap: () => _dobPicker(
+                                      childList[i].marriageDateController),
+                                  readOnly: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FormFields(
+                                  suffixIcon: childList[i]
+                                          .lifePartnerRasiController
+                                          .text
+                                          .isEmpty
+                                      ? const Icon(
+                                          Icons.arrow_drop_down_rounded)
+                                      : IconButton(
+                                          tooltip: "Clear",
+                                          onPressed: () {
+                                            childList[i]
+                                                .lifePartnerRasiController
+                                                .clear();
+                                            childList[i]
+                                                .selectedLifePartnerRasi = null;
+                                            childList[i]
+                                                .lifePartnerNatchathiramController
+                                                .clear();
+                                            setState(() {});
+                                          },
+                                          icon: Icon(
+                                            Iconsax.close_circle,
+                                            color: AppColors.primaryColor,
+                                          ),
+                                        ),
+                                  controller:
+                                      childList[i].lifePartnerRasiController,
+                                  label: "Rasi",
+                                  hintText: "Select",
+                                  onTap: () async {
+                                    var value = await Sheet.showSheet(context,
+                                        size: 0.9, widget: const Rasi());
+                                    if (value != null) {
+                                      childList[i]
+                                          .lifePartnerRasiController
+                                          .text = value["value"];
+                                      childList[i].selectedLifePartnerRasi =
+                                          value["id"];
+                                      setState(() {});
+                                    }
+                                  },
+                                  readOnly: true,
+                                  // valid: (input) {
+                                  //   if (input != null) {
+                                  //     if (input.isEmpty) {
+                                  //       return 'Select site';
+                                  //     }
+                                  //   }
+                                  //   return null;
+                                  // },
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: FormFields(
+                                  suffixIcon: childList[i]
+                                          .lifePartnerNatchathiramController
+                                          .text
+                                          .isEmpty
+                                      ? const Icon(
+                                          Icons.arrow_drop_down_rounded)
+                                      : IconButton(
+                                          tooltip: "Clear",
+                                          onPressed: () {
+                                            childList[i]
+                                                .lifePartnerNatchathiramController
+                                                .clear();
+                                            childList[i]
+                                                    .selectedLifePartnerNatchathiram =
+                                                null;
+                                            setState(() {});
+                                          },
+                                          icon: Icon(
+                                            Iconsax.close_circle,
+                                            color: AppColors.primaryColor,
+                                          ),
+                                        ),
+                                  controller: childList[i]
+                                      .lifePartnerNatchathiramController,
+                                  label: "Natchathiram",
+                                  hintText: "Select",
+                                  onTap: () async {
+                                    if (childList[i]
+                                        .lifePartnerRasiController
+                                        .text
+                                        .isNotEmpty) {
+                                      var value = await Sheet.showSheet(context,
+                                          size: 0.7,
+                                          widget: Natchathiram(
+                                              rasi: childList[i]
+                                                      .selectedChildRasi ??
+                                                  ''));
+                                      if (value != null) {
+                                        log(value.toString());
+                                        childList[i]
+                                            .lifePartnerNatchathiramController
+                                            .text = value["value"];
+                                        childList[i]
+                                                .selectedLifePartnerNatchathiram =
+                                            value["id"];
+
+                                        setState(() {});
+                                      }
+                                    }
+                                  },
+                                  // valid: (input) {
+                                  //   if (input != null) {
+                                  //     if (input.isEmpty) {
+                                  //       return 'Select';
+                                  //     }
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  readOnly: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    const Divider(),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10)
+            ],
+          )
+      ],
     );
   }
 
@@ -1061,6 +1631,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _mobileNumber,
                 label: "Mobile Number",
+                keyType: TextInputType.number,
               ),
             ),
           ],
@@ -1249,8 +1820,7 @@ class _ProfileEditState extends State<ProfileEdit>
         backgroundColor: AppColors.primaryColor,
         shape: const CircleBorder(),
         onPressed: () {
-          // _childList.add(const ChildView());
-          // setState(() {});
+          _addNewChild();
         },
         child: const Icon(Icons.add_rounded),
       );
@@ -1264,20 +1834,11 @@ class _ProfileEditState extends State<ProfileEdit>
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded),
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.pop(context, true);
         },
         tooltip: "Back",
       ),
       title: const Text("Edit Profile"),
-      actions: [
-        IconButton(
-          icon: SvgPicture.asset(SvgAssets.tick),
-          onPressed: () {
-            _saveProfile();
-          },
-          tooltip: "Save",
-        )
-      ],
       bottom: TabBar(
         tabAlignment: TabAlignment.start,
         dragStartBehavior: DragStartBehavior.start,
@@ -1295,4 +1856,88 @@ class _ProfileEditState extends State<ProfileEdit>
       ),
     );
   }
+
+  BottomAppBar bottomAppbar(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.white,
+      surfaceTintColor: Colors.white,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          minimumSize: MaterialStateProperty.all(const Size(80, 30)),
+          padding: MaterialStateProperty.all(EdgeInsets.zero),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Iconsax.tick_circle, color: AppColors.pureWhiteColor),
+            const SizedBox(width: 10),
+            Text(
+              "Submit",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(color: AppColors.pureWhiteColor),
+            ),
+          ],
+        ),
+        onPressed: () async {
+          _saveProfile();
+        },
+      ),
+    );
+  }
+
+  //************** Variables ****************/
+  final TextEditingController _memberName = TextEditingController();
+  final TextEditingController _initial = TextEditingController();
+  final TextEditingController _rasi = TextEditingController();
+  String? _selectedRasi;
+  final TextEditingController _natchathiram = TextEditingController();
+  String? _selectedNatchathiram;
+  final TextEditingController _profession = TextEditingController();
+  String? _selectedProfessionId;
+  final TextEditingController _wifeName = TextEditingController();
+  final TextEditingController _wifeEducation = TextEditingController();
+  final TextEditingController _wifeRasi = TextEditingController();
+  String? _selectedWifeRasi;
+  final TextEditingController _wifeNatchathiram = TextEditingController();
+  String? _selectedWifeNatchathiram;
+  final TextEditingController _fatherId = TextEditingController();
+  final TextEditingController _fatherName = TextEditingController();
+  final TextEditingController _familyOrder = TextEditingController();
+  final TextEditingController _introducerId = TextEditingController();
+  final TextEditingController _introducerRelationship = TextEditingController();
+  final TextEditingController _status = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
+  final TextEditingController _mobileNumber = TextEditingController();
+  final TextEditingController _adhaarNumber = TextEditingController();
+  final TextEditingController _country = TextEditingController();
+  final TextEditingController _state = TextEditingController();
+  final TextEditingController _city = TextEditingController();
+  final TextEditingController _address = TextEditingController();
+  final TextEditingController _pincode = TextEditingController();
+  final TextEditingController _companyName = TextEditingController();
+  final TextEditingController _remarks = TextEditingController();
+  final TextEditingController _history = TextEditingController();
+
+  String? _selectedCountryIndex;
+  String _doj = ""; // Date of joining
+  String _dod = ""; // Date of deletion
+  String _dor = ""; // Date of rejoin
+  String? _profilePhoto;
+  String? _wifePhoto;
+  List<String>? _familyPhoto;
+
+  File? _selectedProfilePhoto;
+  File? _selectedWifePhoto;
+  File? _selectedFamilyPhoto1;
+  File? _selectedFamilyPhoto2;
+  File? _selectedFamilyPhoto3;
 }
