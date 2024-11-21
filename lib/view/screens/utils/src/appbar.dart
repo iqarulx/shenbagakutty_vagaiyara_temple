@@ -41,7 +41,7 @@ class _AppbarState extends State<Appbar> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircleAvatar(
-                child: futureWaitingLoading(),
+                child: futureWaitingLoading(context),
               );
             } else {
               return CircleAvatar(

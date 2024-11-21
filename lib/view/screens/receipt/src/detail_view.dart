@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/l10n/l10n.dart';
 import '/model/model.dart';
 import '/view/view.dart';
 
@@ -22,7 +23,7 @@ class _DetailViewState extends State<DetailView> {
         padding: const EdgeInsets.all(10),
         children: [
           Text(
-            "Receipt Details",
+            AppLocalizations.of(context).receiptDetails,
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge!
@@ -33,23 +34,39 @@ class _DetailViewState extends State<DetailView> {
           const SizedBox(height: 10),
           Table(
             children: [
-              tableData(context, "Receipt Type", widget.model.receiptTypeName),
-              tableData(context, "Receipt Date", widget.model.receiptDate),
-              tableData(context, "Receipt Number", widget.model.receiptNumber),
-              tableData(context, "Last Opened By", widget.model.creatorName),
-              tableData(context, "Member Id", widget.model.statusBaseMemberId),
-              tableData(context, "Member Name", widget.model.memberName),
-              tableData(context, "Year Amount", widget.model.yearAmount),
+              tableData(context, AppLocalizations.of(context).receiptType,
+                  widget.model.receiptTypeName),
+              tableData(context, AppLocalizations.of(context).receiptDate,
+                  widget.model.receiptDate),
+              tableData(context, AppLocalizations.of(context).receiptNumber,
+                  widget.model.receiptNumber),
+              tableData(context, AppLocalizations.of(context).lastOpenedBy,
+                  widget.model.creatorName),
+              tableData(context, AppLocalizations.of(context).memberId,
+                  widget.model.statusBaseMemberId),
+              tableData(context, AppLocalizations.of(context).memberName,
+                  widget.model.memberName),
+              tableData(context, AppLocalizations.of(context).yearAmount,
+                  widget.model.yearAmount),
+              tableData(context, AppLocalizations.of(context).poojaiFromDate,
+                  widget.model.poojaiFromDate),
+              tableData(context, AppLocalizations.of(context).poojaiToDate,
+                  widget.model.poojaiToDate),
+              tableData(context, AppLocalizations.of(context).poojaiAmount,
+                  widget.model.poojaiAmount),
+              tableData(context, AppLocalizations.of(context).amount,
+                  widget.model.amount),
+              tableData(context, AppLocalizations.of(context).decription,
+                  widget.model.description),
+              tableData(context, AppLocalizations.of(context).functionDate,
+                  widget.model.functionDate),
               tableData(
-                  context, "Pooja From Date", widget.model.poojaiFromDate),
-              tableData(context, "Pooja To Date", widget.model.poojaiToDate),
-              tableData(context, "Poojai Amount", widget.model.poojaiAmount),
-              tableData(context, "Amount", widget.model.amount),
-              tableData(context, "Description", widget.model.description),
-              tableData(context, "Function Date", widget.model.functionDate),
-              tableData(context, "Count For Mudikanikai",
+                  context,
+                  AppLocalizations.of(context).countForMudiKanikai,
                   widget.model.countForMudikanikai),
-              tableData(context, "Count For Kadhu Kuthu",
+              tableData(
+                  context,
+                  AppLocalizations.of(context).countForKathukuthu,
                   widget.model.countForKadhuKuthu),
             ],
           )

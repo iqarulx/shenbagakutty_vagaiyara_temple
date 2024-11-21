@@ -29,6 +29,7 @@ class Db {
     cn.setString('profile_photo', model.profilePhoto);
     cn.setBool('receipt_volunteer', model.receiptVolunteer);
     cn.setBool('login', true);
+    cn.setString('theme', 'light');
   }
 
   static Future<String?> getData({required UserData type}) async {
@@ -48,6 +49,26 @@ class Db {
   static Future<bool?> getRV() async {
     var cn = await connect();
     return cn.getBool('receipt_volunteer');
+  }
+
+  static Future<String?> getTheme() async {
+    var cn = await connect();
+    return cn.getString('theme');
+  }
+
+  static Future setTheme(theme) async {
+    var cn = await connect();
+    return cn.setString('theme', theme);
+  }
+
+  static Future<String?> getLocale() async {
+    var cn = await connect();
+    return cn.getString('locale');
+  }
+
+  static Future setLocale(locale) async {
+    var cn = await connect();
+    return cn.setString('locale', locale);
   }
 
   static Future<bool> clearDb() async {

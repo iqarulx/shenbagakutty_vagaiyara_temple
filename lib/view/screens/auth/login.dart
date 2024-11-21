@@ -65,7 +65,8 @@ class _LoginState extends State<Login> {
                           decoration: BoxDecoration(
                             color: AppColors.pureWhiteColor,
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: AppColors.primaryColor),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor),
                           ),
                           child: Form(
                             key: formKey,
@@ -119,7 +120,7 @@ class _LoginState extends State<Login> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: AppColors.primaryColor,
+                                        color: Theme.of(context).primaryColor,
                                       ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -170,7 +171,7 @@ class _LoginState extends State<Login> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: AppColors.primaryColor,
+                                        color: Theme.of(context).primaryColor,
                                       ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -186,7 +187,7 @@ class _LoginState extends State<Login> {
                                       icon: Icon(passwordVisible
                                           ? Iconsax.eye_slash
                                           : Iconsax.eye),
-                                      color: AppColors.primaryColor,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   ),
                                   obscureText: passwordVisible,
@@ -205,7 +206,7 @@ class _LoginState extends State<Login> {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: AppColors.primaryColor,
+                                      color: Theme.of(context).primaryColor,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     height: 50,

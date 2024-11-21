@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
+import '/l10n/l10n.dart';
 import '/model/model.dart';
 import '/functions/functions.dart';
 import '/view/view.dart';
@@ -53,15 +54,15 @@ class _NotifState extends State<Notif> {
           onPressed: () {
             Navigator.pop(context);
           },
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
         ),
-        title: const Text("Notifications"),
+        title: Text(AppLocalizations.of(context).notification),
       ),
       body: FutureBuilder(
         future: _notifHandler,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return futureWaitingLoading();
+            return futureWaitingLoading(context);
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           } else {
@@ -88,7 +89,7 @@ class _NotifState extends State<Notif> {
                                 d[index].notificationImage.toString()),
                           )
                         : CircleAvatar(
-                            backgroundColor: AppColors.primaryColor,
+                            backgroundColor: Theme.of(context).primaryColor,
                             child: SvgPicture.asset(SvgAssets.bellRing),
                           ),
                     title: Text(
@@ -101,7 +102,7 @@ class _NotifState extends State<Notif> {
                     ),
                     trailing: d[index].notificationAudio.isNotEmpty
                         ? IconButton(
-                            tooltip: "Open File",
+                            tooltip: AppLocalizations.of(context).openFile,
                             icon: const Icon(Iconsax.music),
                             onPressed: () async {
                               final player = AudioPlayer();
@@ -119,7 +120,7 @@ class _NotifState extends State<Notif> {
                 },
               );
             }
-            return noData();
+            return noData(context);
           }
         },
       ),

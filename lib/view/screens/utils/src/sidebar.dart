@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '/l10n/l10n.dart';
 import '/view/view.dart';
 import '/constants/constants.dart';
 import '/services/services.dart';
@@ -96,7 +97,7 @@ class _SidebarState extends State<Sidebar> {
                 return Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor: AppColors.primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
                       radius: 25,
                       child: Text(
                         snapshot.data!.first.substring(0, 1),
@@ -132,7 +133,7 @@ class _SidebarState extends State<Sidebar> {
                     )),
                     const SizedBox(width: 10),
                     IconButton(
-                      tooltip: "View Qr Details",
+                      tooltip: AppLocalizations.of(context).viewQrDetails,
                       icon: SvgPicture.asset(SvgAssets.qr),
                       onPressed: () {
                         Navigator.push(
@@ -154,7 +155,7 @@ class _SidebarState extends State<Sidebar> {
                       baseColor: Colors.grey.shade300,
                       highlightColor: Colors.grey.shade100,
                       child: CircleAvatar(
-                        backgroundColor: AppColors.primaryColor,
+                        backgroundColor: Theme.of(context).primaryColor,
                         radius: 25,
                       ),
                     ),
@@ -208,9 +209,9 @@ class _SidebarState extends State<Sidebar> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Menu",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context).menu,
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -228,18 +229,18 @@ class _SidebarState extends State<Sidebar> {
                           color: AppColors.whiteColor,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Iconsax.home,
                                 color: Colors.black,
                               ),
-                              SizedBox(width: 12),
+                              const SizedBox(width: 12),
                               Text(
-                                "Dashboard",
-                                style: TextStyle(
+                                AppLocalizations.of(context).dashboard,
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
                                 ),
@@ -271,18 +272,18 @@ class _SidebarState extends State<Sidebar> {
                       color: AppColors.whiteColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Iconsax.user,
                             color: Colors.black,
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Text(
-                            "Profile",
-                            style: TextStyle(
+                            AppLocalizations.of(context).profile,
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),
@@ -307,18 +308,18 @@ class _SidebarState extends State<Sidebar> {
                       color: AppColors.whiteColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Iconsax.building,
                             color: Colors.black,
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Text(
-                            "Mandapam",
-                            style: TextStyle(
+                            AppLocalizations.of(context).mandapam,
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),
@@ -348,18 +349,18 @@ class _SidebarState extends State<Sidebar> {
                               color: AppColors.whiteColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Iconsax.document,
                                     color: Colors.black,
                                   ),
-                                  SizedBox(width: 12),
+                                  const SizedBox(width: 12),
                                   Text(
-                                    "Receipt",
-                                    style: TextStyle(
+                                    AppLocalizations.of(context).receipt,
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
                                     ),
@@ -393,18 +394,18 @@ class _SidebarState extends State<Sidebar> {
                       color: AppColors.whiteColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Iconsax.arrow_down,
                             color: Colors.black,
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Text(
-                            "Downloads",
-                            style: TextStyle(
+                            AppLocalizations.of(context).downloads,
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),
@@ -427,18 +428,18 @@ class _SidebarState extends State<Sidebar> {
                       color: AppColors.whiteColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Iconsax.setting,
                             color: Colors.black,
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Text(
-                            "Settings",
-                            style: TextStyle(
+                            AppLocalizations.of(context).settings,
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),
@@ -474,24 +475,24 @@ class _SidebarState extends State<Sidebar> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.primaryColor,
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(10),
         ),
         height: 40,
         width: double.infinity,
-        child: const Center(
+        child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Iconsax.logout,
                 color: Colors.white,
                 size: 17,
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               Text(
-                "Logout",
-                style: TextStyle(
+                AppLocalizations.of(context).logoutTitle,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,

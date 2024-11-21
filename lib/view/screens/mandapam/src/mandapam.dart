@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import '/l10n/l10n.dart';
 import '/utils/utils.dart';
 import '/view/view.dart';
 import '/functions/functions.dart';
@@ -45,9 +46,9 @@ class _MandapamState extends State<Mandapam> {
           onPressed: () {
             Navigator.pop(context);
           },
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
         ),
-        title: const Text("Mandapam"),
+        title: Text(AppLocalizations.of(context).mandapam),
       ),
     );
   }
@@ -60,7 +61,7 @@ class _MandapamState extends State<Mandapam> {
             suffixIcon: _mandapam.text.isEmpty
                 ? const Icon(Icons.arrow_drop_down_rounded)
                 : IconButton(
-                    tooltip: "Clear",
+                    tooltip: AppLocalizations.of(context).clear,
                     onPressed: () {
                       _mandapam.clear();
                       _selectedMandapamId = null;
@@ -69,12 +70,12 @@ class _MandapamState extends State<Mandapam> {
                     },
                     icon: Icon(
                       Iconsax.close_circle,
-                      color: AppColors.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
             controller: _mandapam,
-            label: "Mandapam",
-            hintText: "Select",
+            label: AppLocalizations.of(context).mandapam,
+            hintText: AppLocalizations.of(context).select,
             onTap: () async {
               var value = await Sheet.showSheet(context,
                   size: 0.9, widget: const MandapamSheet());
@@ -91,7 +92,7 @@ class _MandapamState extends State<Mandapam> {
         Expanded(
           child: FormFields(
             controller: _customDate,
-            label: "Date",
+            label: AppLocalizations.of(context).date,
             hintText: "dd-mm-yyyy",
             onTap: () => _customDatePicker(),
             readOnly: true,
@@ -106,7 +107,7 @@ class _MandapamState extends State<Mandapam> {
       future: _mandapamHandler,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return futureExpandedLoading();
+          return futureExpandedLoading(context);
         } else if (snapshot.hasError) {
           return ErrorWidget(snapshot.error!);
         } else {
@@ -138,10 +139,10 @@ class _MandapamState extends State<Mandapam> {
                   color: isToday
                       ? Colors.red.withOpacity(0.7) // Highlight today's date
                       : isBooked
-                          ? AppColors.primaryColor
+                          ? Theme.of(context).primaryColor
                           : null,
                   border: isBooked
-                      ? Border.all(color: AppColors.primaryColor)
+                      ? Border.all(color: Theme.of(context).primaryColor)
                       : Border.all(color: Colors.transparent),
                 ),
                 child: Text(
@@ -178,10 +179,10 @@ class _MandapamState extends State<Mandapam> {
               Icon(
                 Icons.circle,
                 size: 10,
-                color: AppColors.primaryColor,
+                color: Theme.of(context).primaryColor,
               ),
               const SizedBox(width: 5),
-              const Text("Booked"),
+              Text(AppLocalizations.of(context).booked),
             ],
           ),
           const SizedBox(width: 10),
@@ -193,7 +194,7 @@ class _MandapamState extends State<Mandapam> {
                 color: Colors.red.withOpacity(0.7),
               ),
               const SizedBox(width: 5),
-              const Text("Today"),
+              Text(AppLocalizations.of(context).today),
             ],
           )
         ],
@@ -249,13 +250,13 @@ class _MandapamState extends State<Mandapam> {
 }
 
 class BookingDataSource extends CalendarDataSource {
-  BookingDataSource(List<DateTime> bookedDates) {
+  BookingDataSource(List<DateTime> bookedDates, context) {
     appointments = bookedDates
         .map(
           (date) => Appointment(
             startTime: date,
             endTime: date,
-            subject: 'Booked',
+            subject: AppLocalizations.of(context).booked,
             color: Colors.blue,
           ),
         )

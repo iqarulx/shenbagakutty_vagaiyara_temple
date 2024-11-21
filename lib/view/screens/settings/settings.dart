@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:open_app_settings/open_app_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '/services/services.dart';
 import '/utils/utils.dart';
 import '/view/view.dart';
+import '/app/app.dart';
+import '/l10n/l10n.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -19,6 +23,7 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   bool _notEnabled = false;
   String appVersion = "";
+  String _theme = "";
 
   @override
   void initState() {
@@ -42,6 +47,8 @@ class _SettingsState extends State<Settings> {
       appVersion = v;
     }
 
+    _theme = await Db.getTheme() ?? 'light';
+
     setState(() {});
   }
 
@@ -59,9 +66,9 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings"),
+        title: Text(AppLocalizations.of(context).settings),
         leading: IconButton(
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
           icon:
               const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
           onPressed: () {
@@ -75,19 +82,19 @@ class _SettingsState extends State<Settings> {
           ListTile(
             onTap: () {},
             leading: CircleAvatar(
-              backgroundColor: AppColors.primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
               child: SvgPicture.asset(
                 SvgAssets.bellRing,
                 height: 20,
                 width: 20,
               ),
             ),
-            title: const Text(
-              "Notifications",
+            title: Text(
+              AppLocalizations.of(context).notification,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              "Push notifications while downloading file",
+              AppLocalizations.of(context).notificationSubtitle,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             trailing: Transform.scale(
@@ -101,84 +108,181 @@ class _SettingsState extends State<Settings> {
               ),
             ),
           ),
-          Divider(
-            color: Colors.grey.shade300,
-          ),
+          Divider(color: Colors.grey.shade300),
           ListTile(
-            onTap: () async {
-              // var r = await AppCache.clearCache();
-              // if (r) {
-              //   Navigator.pop(context);
-              //   Snackbar.showSnackBar(context,
-              //       isSuccess: true, content: "Cache cleared");
-              // } else {
-              //   Navigator.pop(context);
-              //   Snackbar.showSnackBar(context,
-              //       isSuccess: false, content: "Failed to clear cache");
-              // }
+            onTap: () {
+              final themeProvider =
+                  Provider.of<ThemeProvider>(context, listen: false);
+              final currentTheme = themeProvider.appTheme == AppTheme.appTheme
+                  ? "dark"
+                  : "light";
+              themeProvider.changeTheme(currentTheme);
+              _init();
+              setState(() {});
             },
             leading: CircleAvatar(
-              backgroundColor: AppColors.primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              child: SvgPicture.asset(
+                SvgAssets.palette,
+                height: 20,
+                width: 20,
+              ),
+            ),
+            title: Text(
+              AppLocalizations.of(context).appTheme,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              _theme,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            trailing: IconButton(
+              tooltip: AppLocalizations.of(context).appThemeSubtitle,
+              icon: _theme == "light"
+                  ? SvgPicture.asset(
+                      SvgAssets.moon,
+                      height: 25,
+                      width: 25,
+                    )
+                  : SvgPicture.asset(
+                      SvgAssets.sun,
+                      height: 25,
+                      width: 25,
+                    ),
+              onPressed: () async {
+                final themeProvider =
+                    Provider.of<ThemeProvider>(context, listen: false);
+                final currentTheme = themeProvider.appTheme == AppTheme.appTheme
+                    ? "dark"
+                    : "light";
+                themeProvider.changeTheme(currentTheme);
+                _init();
+                setState(() {});
+              },
+            ),
+          ),
+          Divider(color: Colors.grey.shade300),
+          ListTile(
+            onTap: () {},
+            leading: CircleAvatar(
+              backgroundColor: Theme.of(context).primaryColor,
+              child: SvgPicture.asset(
+                SvgAssets.palette,
+                height: 20,
+                width: 20,
+              ),
+            ),
+            title: Text(
+              AppLocalizations.of(context).language,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              _theme,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            trailing: IconButton(
+              tooltip: AppLocalizations.of(context).languageSubtitle,
+              icon: SvgPicture.asset(
+                SvgAssets.language,
+                height: 25,
+                width: 25,
+              ),
+              onPressed: () async {
+                var v = await Sheet.showSheet(context,
+                    size: 0.4, widget: const Language());
+                final localeProvider =
+                    Provider.of<LocaleProvider>(context, listen: false);
+
+                if (v != null) {
+                  if (v == 1) {
+                    localeProvider.setLocale(const Locale('en'));
+                  } else if (v == 2) {
+                    localeProvider.setLocale(const Locale('ta'));
+                  } else if (v == 3) {
+                    localeProvider.setLocale(const Locale('te'));
+                  } else if (v == 4) {
+                    localeProvider.setLocale(const Locale('ka'));
+                  } else if (v == 5) {
+                    localeProvider.setLocale(const Locale('ml'));
+                  }
+                }
+              },
+            ),
+          ),
+          Divider(color: Colors.grey.shade300),
+          ListTile(
+            onTap: () async {
+              var r = await AppCache.clearCache();
+              if (r) {
+                Navigator.pop(context);
+                Snackbar.showSnackBar(context,
+                    isSuccess: true, content: "Cache cleared");
+              } else {
+                Navigator.pop(context);
+                Snackbar.showSnackBar(context,
+                    isSuccess: false, content: "Failed to clear cache");
+              }
+            },
+            leading: CircleAvatar(
+              backgroundColor: Theme.of(context).primaryColor,
               child: SvgPicture.asset(
                 SvgAssets.erase,
                 height: 20,
                 width: 20,
               ),
             ),
-            title: const Text(
-              "Cache",
+            title: Text(
+              AppLocalizations.of(context).cache,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              "Clear app temporary files",
+              AppLocalizations.of(context).cacheSubtitle,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             trailing: IconButton(
-              tooltip: "Clear Temp Files",
+              tooltip: AppLocalizations.of(context).clearTempFiles,
               icon: SvgPicture.asset(
                 SvgAssets.info,
                 height: 30,
                 width: 30,
               ),
               onPressed: () async {
-                // await showDialog(
-                //         context: context,
-                //         builder: (context) => const CacheDialog())
-                //     .then((value) async {
-                //   if (value != null) {
-                //     if (value) {
-                //       var r = await AppCache.clearCache();
-                //       if (r) {
-                //         Navigator.pop(context);
-                //         Snackbar.showSnackBar(context,
-                //             isSuccess: true, content: "Cache cleared");
-                //       } else {
-                //         Navigator.pop(context);
-                //         Snackbar.showSnackBar(context,
-                //             isSuccess: false, content: "Failed to clear cache");
-                //       }
-                //     }
-                //   }
-                // });
+                await showDialog(
+                        context: context,
+                        builder: (context) => const CacheDialog())
+                    .then((value) async {
+                  if (value != null) {
+                    if (value) {
+                      var r = await AppCache.clearCache();
+                      if (r) {
+                        Navigator.pop(context);
+                        Snackbar.showSnackBar(context,
+                            isSuccess: true, content: "Cache cleared");
+                      } else {
+                        Navigator.pop(context);
+                        Snackbar.showSnackBar(context,
+                            isSuccess: false, content: "Failed to clear cache");
+                      }
+                    }
+                  }
+                });
               },
             ),
           ),
-          Divider(
-            color: Colors.grey.shade300,
-          ),
+          Divider(color: Colors.grey.shade300),
           ListTile(
             onTap: () {},
             leading: CircleAvatar(
-              backgroundColor: AppColors.primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
               child: SvgPicture.asset(
                 SvgAssets.device,
                 height: 20,
                 width: 20,
               ),
             ),
-            title: const Text(
-              "App Version",
+            title: Text(
+              AppLocalizations.of(context).appVersion,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
@@ -186,7 +290,7 @@ class _SettingsState extends State<Settings> {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             trailing: IconButton(
-              tooltip: "Open Url",
+              tooltip: AppLocalizations.of(context).openFile,
               icon: Platform.isAndroid
                   ? SvgPicture.asset(
                       SvgAssets.playStore,

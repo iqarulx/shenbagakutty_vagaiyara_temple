@@ -65,8 +65,8 @@ class _CityAddState extends State<CityAdd> {
                 const SizedBox(height: 30),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(AppColors.primaryColor),
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).primaryColor),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     minimumSize: MaterialStateProperty.all(const Size(100, 40)),
                     padding: MaterialStateProperty.all(EdgeInsets.zero),

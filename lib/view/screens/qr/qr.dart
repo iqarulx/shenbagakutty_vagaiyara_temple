@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import '/l10n/l10n.dart';
 import '/utils/utils.dart';
 import '/functions/functions.dart';
 import '/view/view.dart';
@@ -70,12 +71,12 @@ class _QrState extends State<Qr> {
           onPressed: () {
             Navigator.pop(context);
           },
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
         ),
-        title: const Text("Qr Details"),
+        title: Text(AppLocalizations.of(context).qrDetails),
         actions: [
           IconButton(
-            tooltip: "Download Qr",
+            tooltip: AppLocalizations.of(context).downloadQr,
             icon: SvgPicture.asset(SvgAssets.download),
             onPressed: () async {
               Uint8List? imageBytes = await _getWidgetImage();
@@ -91,7 +92,7 @@ class _QrState extends State<Qr> {
         future: _qrHanlder,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return futureWaitingLoading();
+            return futureWaitingLoading(context);
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           } else {
@@ -117,7 +118,7 @@ class _QrState extends State<Qr> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          "Member Id : ${_qrData["member_id"]}",
+                          "${AppLocalizations.of(context).memberId} : ${_qrData["member_id"]}",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         const SizedBox(height: 10),
@@ -134,10 +135,18 @@ class _QrState extends State<Qr> {
                   ),
                   child: Table(
                     children: [
-                      tableData(context, "Member Name", _qrData["member_name"]),
-                      tableData(context, "Mobile Number",
+                      tableData(
+                          context,
+                          AppLocalizations.of(context).memberName,
+                          _qrData["member_name"]),
+                      tableData(
+                          context,
+                          AppLocalizations.of(context).mobileNumber,
                           _qrData["mobile_number"].toString()),
-                      tableData(context, "Father Name", _qrData["father_name"])
+                      tableData(
+                          context,
+                          AppLocalizations.of(context).fatherName,
+                          _qrData["father_name"])
                     ],
                   ),
                 ),

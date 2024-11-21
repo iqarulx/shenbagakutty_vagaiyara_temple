@@ -67,7 +67,7 @@ class _CountryState extends State<Country> {
         future: countryHandler,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return futureWaitingLoading();
+            return futureWaitingLoading(context);
           } else if (snapshot.hasError) {
             return ErrorWidget(snapshot.error!);
           } else {

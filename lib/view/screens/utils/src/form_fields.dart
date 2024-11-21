@@ -50,10 +50,13 @@ class _FormFieldsState extends State<FormFields> {
           if (widget.enabled == false)
             Row(
               children: [
-                Text(
-                  widget.label ?? '',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.black, fontWeight: FontWeight.w300),
+                Expanded(
+                  child: Text(
+                    widget.label ?? '',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.black, fontWeight: FontWeight.w300),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 const SizedBox(width: 5),
                 Icon(
@@ -70,6 +73,7 @@ class _FormFieldsState extends State<FormFields> {
                   .textTheme
                   .bodyMedium!
                   .copyWith(color: Colors.black, fontWeight: FontWeight.w300),
+              overflow: TextOverflow.ellipsis,
             ),
           const SizedBox(
             height: 5,
@@ -113,7 +117,7 @@ class _FormFieldsState extends State<FormFields> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: AppColors.primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -163,7 +167,7 @@ class _FormFieldsState extends State<FormFields> {
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: AppColors.primaryColor,
+              color: Theme.of(context).primaryColor,
             ),
             borderRadius: BorderRadius.circular(10),
           ),

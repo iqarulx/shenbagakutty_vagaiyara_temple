@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '/l10n/l10n.dart';
 import '/utils/utils.dart';
 import '/functions/functions.dart';
 import '/view/view.dart';
@@ -73,16 +74,16 @@ class _ReceiptState extends State<Receipt> {
   AppBar _appbar(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        tooltip: "Back",
+        tooltip: AppLocalizations.of(context).back,
         icon: const Icon(Icons.arrow_back_ios_new_rounded),
         onPressed: () {
           Navigator.pop(context);
         },
       ),
-      title: const Text("Receipt"),
+      title: Text(AppLocalizations.of(context).receipt),
       actions: [
         IconButton(
-          tooltip: "Create Receipt",
+          tooltip: AppLocalizations.of(context).createReceipt,
           icon: const Icon(Icons.add_rounded, size: 30),
           onPressed: () {
             _createReceipt();
@@ -97,7 +98,7 @@ class _ReceiptState extends State<Receipt> {
       future: _receiptHandler,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return futureWaitingLoading();
+          return futureWaitingLoading(context);
         } else if (snapshot.hasError) {
           return ErrorWidget(snapshot.error!);
         } else {
@@ -200,7 +201,7 @@ class _ReceiptState extends State<Receipt> {
                   ),
                 );
               }
-              return noData();
+              return noData(context);
             },
           );
         }
@@ -217,14 +218,14 @@ class _ReceiptState extends State<Receipt> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Receipt List",
+                AppLocalizations.of(context).receiptList,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               if (_totalReceipt != null)
                 Text(
-                  "Total Records : $_totalReceipt",
+                  "${AppLocalizations.of(context).totalRecords} : $_totalReceipt",
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: AppColors.primaryColor,
+                        color: Theme.of(context).primaryColor,
                       ),
                 ),
             ],
@@ -250,7 +251,7 @@ class _ReceiptState extends State<Receipt> {
               child: FormFields(
                 suffixIcon: const Icon(Icons.arrow_drop_down_rounded),
                 controller: _pageNo,
-                hintText: "Page No",
+                hintText: AppLocalizations.of(context).pageNo,
                 onTap: () async {
                   var value = await Sheet.showSheet(
                     context,
@@ -274,7 +275,7 @@ class _ReceiptState extends State<Receipt> {
               child: FormFields(
                 suffixIcon: const Icon(Icons.arrow_drop_down_rounded),
                 controller: _pageLimit,
-                hintText: "Page Limit",
+                hintText: AppLocalizations.of(context).pageLimit,
                 onTap: () async {
                   var value = await Sheet.showSheet(
                     context,
@@ -296,7 +297,7 @@ class _ReceiptState extends State<Receipt> {
                 suffixIcon: _rCategory.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _rCategory.clear();
                           selectedRCategoryId = null;
@@ -305,11 +306,11 @@ class _ReceiptState extends State<Receipt> {
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _rCategory,
-                hintText: "Category",
+                hintText: AppLocalizations.of(context).category,
                 onTap: () async {
                   var value = await Sheet.showSheet(context,
                       size: 0.5,
@@ -330,7 +331,7 @@ class _ReceiptState extends State<Receipt> {
                 suffixIcon: _rType.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _rType.clear();
                           selectedRTypeId = null;
@@ -340,11 +341,11 @@ class _ReceiptState extends State<Receipt> {
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _rType,
-                hintText: "Type",
+                hintText: AppLocalizations.of(context).type,
                 onTap: () async {
                   if (selectedRCategoryId != null) {
                     var value = await Sheet.showSheet(context,
@@ -378,7 +379,7 @@ class _ReceiptState extends State<Receipt> {
                 suffixIcon: _member.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _member.clear();
                           selectedMemberId = null;
@@ -388,11 +389,11 @@ class _ReceiptState extends State<Receipt> {
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _member,
-                hintText: "Member",
+                hintText: AppLocalizations.of(context).member,
                 onTap: () async {
                   var value = await Sheet.showSheet(context,
                       size: 0.9,
@@ -415,7 +416,7 @@ class _ReceiptState extends State<Receipt> {
                 suffixIcon: _creatorMember.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _creatorMember.clear();
                           selectedCreatorMemberId = null;
@@ -425,11 +426,11 @@ class _ReceiptState extends State<Receipt> {
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _creatorMember,
-                hintText: "Creator Member",
+                hintText: AppLocalizations.of(context).creatorMember,
                 onTap: () async {
                   var value = await Sheet.showSheet(context,
                       size: 0.9,
@@ -452,7 +453,7 @@ class _ReceiptState extends State<Receipt> {
                 suffixIcon: _nonMember.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _nonMember.clear();
                           selectedNonMemberId = null;
@@ -462,11 +463,11 @@ class _ReceiptState extends State<Receipt> {
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _nonMember,
-                hintText: "Non Member",
+                hintText: AppLocalizations.of(context).nonMember,
                 onTap: () async {
                   var value = await Sheet.showSheet(context,
                       size: 0.9,
@@ -488,7 +489,7 @@ class _ReceiptState extends State<Receipt> {
               child: FormFields(
                 suffixIcon: const Icon(Iconsax.calendar_1),
                 controller: _fromDate,
-                hintText: "From Date",
+                hintText: AppLocalizations.of(context).fromDate,
                 onTap: () => _fromPicker(),
                 readOnly: true,
               ),
@@ -499,7 +500,7 @@ class _ReceiptState extends State<Receipt> {
               child: FormFields(
                 suffixIcon: const Icon(Iconsax.calendar_1),
                 controller: _toDate,
-                hintText: "To Date",
+                hintText: AppLocalizations.of(context).toDate,
                 onTap: () => _toPicker(),
                 readOnly: true,
               ),
@@ -510,7 +511,7 @@ class _ReceiptState extends State<Receipt> {
               child: FormFields(
                 suffixIcon: const Icon(Iconsax.search_normal),
                 controller: _search,
-                hintText: "Search",
+                hintText: AppLocalizations.of(context).search,
                 onChanged: (String v) {
                   _receiptHandler = _init();
                 },

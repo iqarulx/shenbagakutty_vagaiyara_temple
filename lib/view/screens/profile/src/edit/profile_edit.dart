@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import '/l10n/l10n.dart';
 import '/constants/constants.dart';
 import '/functions/functions.dart';
 import '/services/services.dart';
@@ -116,7 +117,7 @@ class _ProfileEditState extends State<ProfileEdit>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Child Details",
+                          AppLocalizations.of(context).childDetails,
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
@@ -130,7 +131,7 @@ class _ProfileEditState extends State<ProfileEdit>
                           style: const ButtonStyle(
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          tooltip: "Remove Child",
+                          tooltip: AppLocalizations.of(context).removeChild,
                           icon: const Icon(
                             Iconsax.trash,
                             color: Colors.red,
@@ -139,9 +140,11 @@ class _ProfileEditState extends State<ProfileEdit>
                             var r = await showDialog(
                               context: context,
                               builder: (context) {
-                                return const CDialog(
-                                  title: "Remove",
-                                  content: "Are you sure want to remove child?",
+                                return CDialog(
+                                  title: AppLocalizations.of(context)
+                                      .removeChildTitle,
+                                  content: AppLocalizations.of(context)
+                                      .removeChildBody,
                                 );
                               },
                             );
@@ -193,11 +196,11 @@ class _ProfileEditState extends State<ProfileEdit>
                             right: 0,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: AppColors.primaryColor,
+                                color: Theme.of(context).primaryColor,
                                 shape: BoxShape.circle,
                               ),
                               child: IconButton(
-                                tooltip: "Edit",
+                                tooltip: AppLocalizations.of(context).edit,
                                 icon: const Icon(Icons.edit_rounded),
                                 onPressed: () async {
                                   var v = await Sheet.showSheet(context,
@@ -233,7 +236,7 @@ class _ProfileEditState extends State<ProfileEdit>
                           flex: 1,
                           child: FormFields(
                             controller: childList[i].childInitialController,
-                            label: "Intial",
+                            label: AppLocalizations.of(context).initial,
                           ),
                         ),
                         const SizedBox(
@@ -243,7 +246,7 @@ class _ProfileEditState extends State<ProfileEdit>
                           flex: 3,
                           child: FormFields(
                             controller: childList[i].childNameController,
-                            label: "Name",
+                            label: AppLocalizations.of(context).name,
                           ),
                         )
                       ],
@@ -253,7 +256,7 @@ class _ProfileEditState extends State<ProfileEdit>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Gender",
+                          AppLocalizations.of(context).gender,
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
@@ -266,12 +269,12 @@ class _ProfileEditState extends State<ProfileEdit>
                             Expanded(
                               child: RadioListTile<String>(
                                 title: Text(
-                                  'Male',
+                                  AppLocalizations.of(context).male,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 value: 'Male',
                                 groupValue: childList[i].childGender,
-                                activeColor: AppColors.primaryColor,
+                                activeColor: Theme.of(context).primaryColor,
                                 onChanged: (v) {
                                   childList[i].childGender = v;
                                   setState(() {});
@@ -282,11 +285,11 @@ class _ProfileEditState extends State<ProfileEdit>
                             Expanded(
                               child: RadioListTile<String>(
                                 title: Text(
-                                  'Female',
+                                  AppLocalizations.of(context).female,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 value: 'Female',
-                                activeColor: AppColors.primaryColor,
+                                activeColor: Theme.of(context).primaryColor,
                                 groupValue: childList[i].childGender,
                                 onChanged: (v) {
                                   childList[i].childGender = v;
@@ -305,7 +308,7 @@ class _ProfileEditState extends State<ProfileEdit>
                         Expanded(
                           child: FormFields(
                             controller: childList[i].childDobController,
-                            label: "Date of Birth",
+                            label: AppLocalizations.of(context).dateOfBirth,
                             hintText: "dd-mm-yyyy",
                             onTap: () =>
                                 _dobPicker(childList[i].childDobController),
@@ -319,7 +322,7 @@ class _ProfileEditState extends State<ProfileEdit>
                           child: FormFields(
                             controller:
                                 childList[i].childMobileNumberController,
-                            label: "Mobile No",
+                            label: AppLocalizations.of(context).mobileNumber,
                             keyType: TextInputType.number,
                           ),
                         ),
@@ -336,7 +339,7 @@ class _ProfileEditState extends State<ProfileEdit>
                                     .isEmpty
                                 ? const Icon(Icons.arrow_drop_down_rounded)
                                 : IconButton(
-                                    tooltip: "Clear",
+                                    tooltip: AppLocalizations.of(context).clear,
                                     onPressed: () {
                                       childList[i].childRasiController.clear();
                                       childList[i].selectedChildRasi = null;
@@ -347,12 +350,12 @@ class _ProfileEditState extends State<ProfileEdit>
                                     },
                                     icon: Icon(
                                       Iconsax.close_circle,
-                                      color: AppColors.primaryColor,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   ),
                             controller: childList[i].childRasiController,
-                            label: "Rasi",
-                            hintText: "Select",
+                            label: AppLocalizations.of(context).rasi,
+                            hintText: AppLocalizations.of(context).select,
                             onTap: () async {
                               var value = await Sheet.showSheet(context,
                                   size: 0.9, widget: const Rasi());
@@ -385,7 +388,7 @@ class _ProfileEditState extends State<ProfileEdit>
                                     .isEmpty
                                 ? const Icon(Icons.arrow_drop_down_rounded)
                                 : IconButton(
-                                    tooltip: "Clear",
+                                    tooltip: AppLocalizations.of(context).clear,
                                     onPressed: () {
                                       childList[i]
                                           .childNatchathiramController
@@ -396,12 +399,12 @@ class _ProfileEditState extends State<ProfileEdit>
                                     },
                                     icon: Icon(
                                       Iconsax.close_circle,
-                                      color: AppColors.primaryColor,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   ),
                             controller:
                                 childList[i].childNatchathiramController,
-                            label: "Natchathiram",
+                            label: AppLocalizations.of(context).natchathiram,
                             hintText: "Select",
                             onTap: () async {
                               if (childList[i]
@@ -442,7 +445,7 @@ class _ProfileEditState extends State<ProfileEdit>
                         Expanded(
                           child: FormFields(
                             controller: childList[i].childEducationController,
-                            label: "Education",
+                            label: AppLocalizations.of(context).education,
                           ),
                         ),
                         const SizedBox(
@@ -450,25 +453,27 @@ class _ProfileEditState extends State<ProfileEdit>
                         ),
                         Expanded(
                             child: FormFields(
-                          suffixIcon:
-                              childList[i].childJobController.text.isEmpty
-                                  ? const Icon(Icons.arrow_drop_down_rounded)
-                                  : IconButton(
-                                      tooltip: "Clear",
-                                      onPressed: () {
-                                        childList[i].childJobController.clear();
-                                        childList[i].selectedChildJob = null;
+                          suffixIcon: childList[i]
+                                  .childJobController
+                                  .text
+                                  .isEmpty
+                              ? const Icon(Icons.arrow_drop_down_rounded)
+                              : IconButton(
+                                  tooltip: AppLocalizations.of(context).clear,
+                                  onPressed: () {
+                                    childList[i].childJobController.clear();
+                                    childList[i].selectedChildJob = null;
 
-                                        setState(() {});
-                                      },
-                                      icon: Icon(
-                                        Iconsax.close_circle,
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ),
+                                    setState(() {});
+                                  },
+                                  icon: Icon(
+                                    Iconsax.close_circle,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
                           controller: childList[i].childJobController,
-                          label: "Job",
-                          hintText: "Select",
+                          label: AppLocalizations.of(context).job,
+                          hintText: AppLocalizations.of(context).select,
                           onTap: () async {
                             var value = await Sheet.showSheet(context,
                                 size: 0.9,
@@ -499,7 +504,7 @@ class _ProfileEditState extends State<ProfileEdit>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Marrige Status",
+                          AppLocalizations.of(context).marriageStatus,
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
@@ -512,12 +517,12 @@ class _ProfileEditState extends State<ProfileEdit>
                             Expanded(
                               child: RadioListTile<String>(
                                 title: Text(
-                                  'Yes',
+                                  AppLocalizations.of(context).yes,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 value: '1',
                                 groupValue: childList[i].childMarrigeStatus,
-                                activeColor: AppColors.primaryColor,
+                                activeColor: Theme.of(context).primaryColor,
                                 onChanged: (v) {
                                   childList[i].childMarrigeStatus = v;
                                   setState(() {});
@@ -528,12 +533,12 @@ class _ProfileEditState extends State<ProfileEdit>
                             Expanded(
                               child: RadioListTile<String>(
                                 title: Text(
-                                  'No',
+                                  AppLocalizations.of(context).no,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 value: '2',
                                 contentPadding: EdgeInsets.zero,
-                                activeColor: AppColors.primaryColor,
+                                activeColor: Theme.of(context).primaryColor,
                                 groupValue: childList[i].childMarrigeStatus,
                                 onChanged: (v) {
                                   childList[i].childMarrigeStatus = v;
@@ -553,7 +558,7 @@ class _ProfileEditState extends State<ProfileEdit>
                           const Divider(),
                           const SizedBox(height: 5),
                           Text(
-                            "Life Partner Details",
+                            AppLocalizations.of(context).lifePartnerDetails,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!
@@ -568,7 +573,7 @@ class _ProfileEditState extends State<ProfileEdit>
                                 child: FormFields(
                                   controller:
                                       childList[i].lifePartnerNameController,
-                                  label: "Name",
+                                  label: AppLocalizations.of(context).name,
                                 ),
                               ),
                               const SizedBox(
@@ -578,7 +583,7 @@ class _ProfileEditState extends State<ProfileEdit>
                                 child: FormFields(
                                   controller: childList[i]
                                       .lifePatnerEducationController,
-                                  label: "Education",
+                                  label: AppLocalizations.of(context).education,
                                 ),
                               ),
                             ],
@@ -590,7 +595,8 @@ class _ProfileEditState extends State<ProfileEdit>
                                 child: FormFields(
                                   controller:
                                       childList[i].lifePartnerDobController,
-                                  label: "Date of Birth",
+                                  label:
+                                      AppLocalizations.of(context).dateOfBirth,
                                   hintText: "dd-mm-yyyy",
                                   onTap: () => _dobPicker(
                                       childList[i].lifePartnerDobController),
@@ -604,7 +610,8 @@ class _ProfileEditState extends State<ProfileEdit>
                                 child: FormFields(
                                   controller:
                                       childList[i].marriageDateController,
-                                  label: "Marriage Date",
+                                  label:
+                                      AppLocalizations.of(context).marriageDate,
                                   hintText: "dd-mm-yyyy",
                                   onTap: () => _dobPicker(
                                       childList[i].marriageDateController),
@@ -625,7 +632,8 @@ class _ProfileEditState extends State<ProfileEdit>
                                       ? const Icon(
                                           Icons.arrow_drop_down_rounded)
                                       : IconButton(
-                                          tooltip: "Clear",
+                                          tooltip: AppLocalizations.of(context)
+                                              .clear,
                                           onPressed: () {
                                             childList[i]
                                                 .lifePartnerRasiController
@@ -639,13 +647,14 @@ class _ProfileEditState extends State<ProfileEdit>
                                           },
                                           icon: Icon(
                                             Iconsax.close_circle,
-                                            color: AppColors.primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
                                         ),
                                   controller:
                                       childList[i].lifePartnerRasiController,
-                                  label: "Rasi",
-                                  hintText: "Select",
+                                  label: AppLocalizations.of(context).rasi,
+                                  hintText: AppLocalizations.of(context).select,
                                   onTap: () async {
                                     var value = await Sheet.showSheet(context,
                                         size: 0.9, widget: const Rasi());
@@ -681,7 +690,8 @@ class _ProfileEditState extends State<ProfileEdit>
                                       ? const Icon(
                                           Icons.arrow_drop_down_rounded)
                                       : IconButton(
-                                          tooltip: "Clear",
+                                          tooltip: AppLocalizations.of(context)
+                                              .clear,
                                           onPressed: () {
                                             childList[i]
                                                 .lifePartnerNatchathiramController
@@ -693,12 +703,14 @@ class _ProfileEditState extends State<ProfileEdit>
                                           },
                                           icon: Icon(
                                             Iconsax.close_circle,
-                                            color: AppColors.primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
                                         ),
                                   controller: childList[i]
                                       .lifePartnerNatchathiramController,
-                                  label: "Natchathiram",
+                                  label:
+                                      AppLocalizations.of(context).natchathiram,
                                   hintText: "Select",
                                   onTap: () async {
                                     if (childList[i]
@@ -766,7 +778,7 @@ class _ProfileEditState extends State<ProfileEdit>
             children: [
               const SizedBox(height: 10),
               Text(
-                "Profile Photo",
+                AppLocalizations.of(context).profilePhoto,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 10),
@@ -815,11 +827,11 @@ class _ProfileEditState extends State<ProfileEdit>
                     right: 0,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
+                        color: Theme.of(context).primaryColor,
                         shape: BoxShape.circle,
                       ),
                       child: IconButton(
-                        tooltip: "Edit",
+                        tooltip: AppLocalizations.of(context).edit,
                         icon: const Icon(Icons.edit_rounded),
                         onPressed: () async {
                           var v = await Sheet.showSheet(context,
@@ -847,7 +859,7 @@ class _ProfileEditState extends State<ProfileEdit>
               const SizedBox(height: 10),
               const SizedBox(height: 10),
               Text(
-                "Wife Photo",
+                AppLocalizations.of(context).wifePhoto,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 10),
@@ -894,11 +906,11 @@ class _ProfileEditState extends State<ProfileEdit>
                   right: 0,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
+                      color: Theme.of(context).primaryColor,
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      tooltip: "Edit",
+                      tooltip: AppLocalizations.of(context).edit,
                       icon: const Icon(Icons.edit_rounded),
                       onPressed: () async {
                         var v = await Sheet.showSheet(context,
@@ -925,7 +937,7 @@ class _ProfileEditState extends State<ProfileEdit>
               const SizedBox(height: 10),
               const SizedBox(height: 10),
               Text(
-                "Family Photo",
+                AppLocalizations.of(context).familyPhoto,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 10),
@@ -984,11 +996,11 @@ class _ProfileEditState extends State<ProfileEdit>
                         right: 0,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
+                            color: Theme.of(context).primaryColor,
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
-                            tooltip: "Edit",
+                            tooltip: AppLocalizations.of(context).edit,
                             icon: const Icon(Icons.edit_rounded),
                             onPressed: () async {
                               var v = await Sheet.showSheet(context,
@@ -1069,11 +1081,11 @@ class _ProfileEditState extends State<ProfileEdit>
                         right: 0,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
+                            color: Theme.of(context).primaryColor,
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
-                            tooltip: "Edit",
+                            tooltip: AppLocalizations.of(context).edit,
                             icon: const Icon(Icons.edit_rounded),
                             onPressed: () async {
                               var v = await Sheet.showSheet(context,
@@ -1156,11 +1168,11 @@ class _ProfileEditState extends State<ProfileEdit>
                     right: 0,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
+                        color: Theme.of(context).primaryColor,
                         shape: BoxShape.circle,
                       ),
                       child: IconButton(
-                        tooltip: "Edit",
+                        tooltip: AppLocalizations.of(context).edit,
                         icon: const Icon(Icons.edit_rounded),
                         onPressed: () async {
                           var v = await Sheet.showSheet(context,
@@ -1205,7 +1217,7 @@ class _ProfileEditState extends State<ProfileEdit>
           suffixIcon: _country.text.isEmpty
               ? const Icon(Icons.arrow_drop_down_rounded)
               : IconButton(
-                  tooltip: "Clear",
+                  tooltip: AppLocalizations.of(context).clear,
                   onPressed: () {
                     _country.clear();
                     _selectedCountryIndex = null;
@@ -1213,12 +1225,12 @@ class _ProfileEditState extends State<ProfileEdit>
                   },
                   icon: Icon(
                     Iconsax.close_circle,
-                    color: AppColors.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
           controller: _country,
-          label: "Country (*)",
-          hintText: "Select",
+          label: "${AppLocalizations.of(context).country} (*)",
+          hintText: AppLocalizations.of(context).select,
           onTap: () async {
             var value = await Sheet.showSheet(context,
                 size: 0.9, widget: const Country());
@@ -1234,19 +1246,19 @@ class _ProfileEditState extends State<ProfileEdit>
           suffixIcon: _state.text.isEmpty
               ? const Icon(Icons.arrow_drop_down_rounded)
               : IconButton(
-                  tooltip: "Clear",
+                  tooltip: AppLocalizations.of(context).clear,
                   onPressed: () {
                     _state.clear();
                     setState(() {});
                   },
                   icon: Icon(
                     Iconsax.close_circle,
-                    color: AppColors.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
           controller: _state,
-          label: "State (*)",
-          hintText: "Select",
+          label: "${AppLocalizations.of(context).state} (*)",
+          hintText: AppLocalizations.of(context).state,
           onTap: () async {
             if (_selectedCountryIndex != null) {
               var value = await Sheet.showSheet(context,
@@ -1269,19 +1281,19 @@ class _ProfileEditState extends State<ProfileEdit>
                 suffixIcon: _city.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _city.clear();
                           setState(() {});
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _city,
-                label: "City (*)",
-                hintText: "Select",
+                label: "${AppLocalizations.of(context).city} (*)",
+                hintText: AppLocalizations.of(context).select,
                 onTap: () async {
                   if (_selectedCountryIndex != null && _state.text.isNotEmpty) {
                     var value = await Sheet.showSheet(context,
@@ -1300,7 +1312,7 @@ class _ProfileEditState extends State<ProfileEdit>
             Expanded(
               child: FormFields(
                 controller: _pincode,
-                label: "Pincode",
+                label: AppLocalizations.of(context).pincode,
               ),
             )
           ],
@@ -1308,24 +1320,24 @@ class _ProfileEditState extends State<ProfileEdit>
         const SizedBox(height: 10),
         FormFields(
           controller: _address,
-          label: "Address",
+          label: AppLocalizations.of(context).address,
           maxLines: 3,
         ),
         const SizedBox(height: 10),
         FormFields(
           controller: _companyName,
-          label: "Company Name",
+          label: AppLocalizations.of(context).companyName,
         ),
         const SizedBox(height: 10),
         FormFields(
           controller: _remarks,
-          label: "Remarks",
+          label: AppLocalizations.of(context).remarks,
           maxLines: 3,
         ),
         const SizedBox(height: 10),
         FormFields(
           controller: _history,
-          label: "History",
+          label: AppLocalizations.of(context).history,
           maxLines: 3,
         ),
       ],
@@ -1342,7 +1354,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _initial,
                 enabled: false,
-                label: "Initial",
+                label: AppLocalizations.of(context).initial,
               ),
             ),
             const SizedBox(
@@ -1352,7 +1364,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _memberName,
                 enabled: false,
-                label: "Member Name",
+                label: AppLocalizations.of(context).memberName,
               ),
             ),
           ],
@@ -1365,7 +1377,7 @@ class _ProfileEditState extends State<ProfileEdit>
                 suffixIcon: _rasi.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _rasi.clear();
                           _selectedRasi = null;
@@ -1374,12 +1386,12 @@ class _ProfileEditState extends State<ProfileEdit>
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _rasi,
-                label: "Rasi",
-                hintText: "Select",
+                label: AppLocalizations.of(context).rasi,
+                hintText: AppLocalizations.of(context).select,
                 onTap: () async {
                   var value = await Sheet.showSheet(context,
                       size: 0.9, widget: const Rasi());
@@ -1407,7 +1419,7 @@ class _ProfileEditState extends State<ProfileEdit>
                 suffixIcon: _natchathiram.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _selectedNatchathiram = null;
                           _natchathiram.clear();
@@ -1415,12 +1427,12 @@ class _ProfileEditState extends State<ProfileEdit>
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _natchathiram,
-                label: "Natchathiram",
-                hintText: "Select",
+                label: AppLocalizations.of(context).natchathiram,
+                hintText: AppLocalizations.of(context).select,
                 onTap: () async {
                   if (_rasi.text.isNotEmpty) {
                     var value = await Sheet.showSheet(context,
@@ -1449,7 +1461,7 @@ class _ProfileEditState extends State<ProfileEdit>
           suffixIcon: _profession.text.isEmpty
               ? const Icon(Icons.arrow_drop_down_rounded)
               : IconButton(
-                  tooltip: "Clear",
+                  tooltip: AppLocalizations.of(context).clear,
                   onPressed: () {
                     _profession.clear();
                     _selectedProfessionId = null;
@@ -1457,12 +1469,12 @@ class _ProfileEditState extends State<ProfileEdit>
                   },
                   icon: Icon(
                     Iconsax.close_circle,
-                    color: AppColors.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
           controller: _profession,
-          label: "Profession",
-          hintText: "Select",
+          label: AppLocalizations.of(context).profession,
+          hintText: AppLocalizations.of(context).select,
           onTap: () async {
             var value = await Sheet.showSheet(context,
                 size: 0.9,
@@ -1480,7 +1492,7 @@ class _ProfileEditState extends State<ProfileEdit>
             Expanded(
               child: FormFields(
                 controller: _wifeName,
-                label: "Wife Name",
+                label: AppLocalizations.of(context).wifeName,
               ),
             ),
             const SizedBox(
@@ -1489,7 +1501,7 @@ class _ProfileEditState extends State<ProfileEdit>
             Expanded(
               child: FormFields(
                 controller: _wifeEducation,
-                label: "Wife Education",
+                label: AppLocalizations.of(context).wifeEducation,
               ),
             ),
           ],
@@ -1500,7 +1512,7 @@ class _ProfileEditState extends State<ProfileEdit>
             Expanded(
               child: FormFields(
                 controller: _phoneNumber,
-                label: "Phone Number",
+                label: AppLocalizations.of(context).phoneNumber,
               ),
             ),
             const SizedBox(
@@ -1509,7 +1521,7 @@ class _ProfileEditState extends State<ProfileEdit>
             Expanded(
               child: FormFields(
                 controller: _mobileNumber,
-                label: "Mobile Number",
+                label: AppLocalizations.of(context).mobileNumber,
                 keyType: TextInputType.number,
               ),
             ),
@@ -1518,7 +1530,7 @@ class _ProfileEditState extends State<ProfileEdit>
         const SizedBox(height: 10),
         FormFields(
           controller: _profession,
-          label: "Adhaar Number",
+          label: AppLocalizations.of(context).adhaarNumber,
         ),
         const SizedBox(height: 10),
         Row(
@@ -1528,7 +1540,7 @@ class _ProfileEditState extends State<ProfileEdit>
                 suffixIcon: _wifeRasi.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _wifeRasi.clear();
                           _selectedWifeRasi = null;
@@ -1537,12 +1549,12 @@ class _ProfileEditState extends State<ProfileEdit>
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _wifeRasi,
-                label: "Wife Rasi",
-                hintText: "Select",
+                label: AppLocalizations.of(context).wifeRasi,
+                hintText: AppLocalizations.of(context).select,
                 onTap: () async {
                   var value = await Sheet.showSheet(context,
                       size: 0.9, widget: const Rasi());
@@ -1570,7 +1582,7 @@ class _ProfileEditState extends State<ProfileEdit>
                 suffixIcon: _wifeNatchathiram.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
-                        tooltip: "Clear",
+                        tooltip: AppLocalizations.of(context).clear,
                         onPressed: () {
                           _wifeNatchathiram.clear();
                           _selectedWifeNatchathiram = null;
@@ -1578,12 +1590,12 @@ class _ProfileEditState extends State<ProfileEdit>
                         },
                         icon: Icon(
                           Iconsax.close_circle,
-                          color: AppColors.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                 controller: _wifeNatchathiram,
-                label: "Wife Natchathiram",
-                hintText: "Select",
+                label: AppLocalizations.of(context).wifeNatchathiram,
+                hintText: AppLocalizations.of(context).select,
                 onTap: () async {
                   if (_wifeRasi.text.isNotEmpty) {
                     var value = await Sheet.showSheet(context,
@@ -1615,7 +1627,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _fatherId,
                 enabled: false,
-                label: "Father Id",
+                label: AppLocalizations.of(context).fatherId,
               ),
             ),
             const SizedBox(
@@ -1625,7 +1637,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _familyOrder,
                 enabled: false,
-                label: "Family Order",
+                label: AppLocalizations.of(context).familyOrder,
               ),
             ),
           ],
@@ -1637,7 +1649,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _fatherName,
                 enabled: false,
-                label: "Father Name",
+                label: AppLocalizations.of(context).fatherName,
               ),
             ),
             const SizedBox(
@@ -1647,7 +1659,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _status,
                 enabled: false,
-                label: "Status",
+                label: AppLocalizations.of(context).status,
               ),
             ),
           ],
@@ -1659,7 +1671,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _introducerId,
                 enabled: false,
-                label: "Introducer Id",
+                label: AppLocalizations.of(context).introducerId,
               ),
             ),
             const SizedBox(
@@ -1669,7 +1681,7 @@ class _ProfileEditState extends State<ProfileEdit>
               child: FormFields(
                 controller: _introducerRelationship,
                 enabled: false,
-                label: "Introducer Relationship",
+                label: AppLocalizations.of(context).introducerRelationship,
               ),
             ),
           ],
@@ -1682,9 +1694,11 @@ class _ProfileEditState extends State<ProfileEdit>
             borderRadius: BorderRadius.circular(10),
           ),
           child: Table(children: [
-            tableData(context, "Date Of Joining", _doj),
-            tableData(context, "Date of Deletion", _dod),
-            tableData(context, "Date of Rejoin", _dor)
+            tableData(
+                context, AppLocalizations.of(context).dateOfJoining, _doj),
+            tableData(
+                context, AppLocalizations.of(context).dateOfDeletion, _dod),
+            tableData(context, AppLocalizations.of(context).dateOfRejoin, _dor)
           ]),
         )
       ],
@@ -1696,7 +1710,7 @@ class _ProfileEditState extends State<ProfileEdit>
       return FloatingActionButton(
         heroTag: null,
         foregroundColor: AppColors.whiteColor,
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         shape: const CircleBorder(),
         onPressed: () {
           _addNewChild();
@@ -1715,9 +1729,9 @@ class _ProfileEditState extends State<ProfileEdit>
         onPressed: () {
           Navigator.pop(context, true);
         },
-        tooltip: "Back",
+        tooltip: AppLocalizations.of(context).back,
       ),
-      title: const Text("Edit Profile"),
+      title: Text(AppLocalizations.of(context).editProfile),
       bottom: TabBar(
         tabAlignment: TabAlignment.start,
         dragStartBehavior: DragStartBehavior.start,
@@ -1726,11 +1740,11 @@ class _ProfileEditState extends State<ProfileEdit>
         unselectedLabelColor: Colors.white70,
         controller: _tabController,
         isScrollable: true,
-        tabs: const [
-          Tab(text: "Personal Details"),
-          Tab(text: "Address"),
-          Tab(text: "Member Images"),
-          Tab(text: "Child Details"),
+        tabs: [
+          Tab(text: AppLocalizations.of(context).personalDetails),
+          Tab(text: AppLocalizations.of(context).address),
+          Tab(text: AppLocalizations.of(context).memberImages),
+          Tab(text: AppLocalizations.of(context).childDetails),
         ],
       ),
     );
@@ -1742,7 +1756,8 @@ class _ProfileEditState extends State<ProfileEdit>
       surfaceTintColor: Colors.white,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
+          backgroundColor:
+              MaterialStateProperty.all(Theme.of(context).primaryColor),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           minimumSize: MaterialStateProperty.all(const Size(80, 30)),
           padding: MaterialStateProperty.all(EdgeInsets.zero),
@@ -1758,7 +1773,7 @@ class _ProfileEditState extends State<ProfileEdit>
             Icon(Iconsax.tick_circle, color: AppColors.pureWhiteColor),
             const SizedBox(width: 10),
             Text(
-              "Submit",
+              AppLocalizations.of(context).submit,
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge!
@@ -2028,7 +2043,8 @@ class _ProfileEditState extends State<ProfileEdit>
       await ProfileFunctions.updateProfile(query: updateData).then((value) {
         Navigator.pop(context);
         Snackbar.showSnackBar(context,
-            content: "Updated Successfully", isSuccess: true);
+            content: AppLocalizations.of(context).updateSuccessMsg,
+            isSuccess: true);
       });
     } catch (e) {
       Navigator.pop(context);

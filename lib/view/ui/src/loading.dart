@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '/constants/constants.dart';
-import '/view/view.dart';
 
 futureLoading(context, {LoadingText? textType}) {
   showDialog(
@@ -19,7 +17,7 @@ futureLoading(context, {LoadingText? textType}) {
             shape: BoxShape.circle,
           ),
           child: CircularProgressIndicator(
-            color: AppColors.primaryColor,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),
@@ -27,19 +25,19 @@ futureLoading(context, {LoadingText? textType}) {
   );
 }
 
-futureWaitingLoading() {
+futureWaitingLoading(context) {
   return Center(
     child: CircularProgressIndicator(
-      color: AppColors.primaryColor,
+      color: Theme.of(context).primaryColor,
     ),
   );
 }
 
-futureExpandedLoading() {
+futureExpandedLoading(context) {
   return Expanded(
     child: Center(
       child: CircularProgressIndicator(
-        color: AppColors.primaryColor,
+        color: Theme.of(context).primaryColor,
       ),
     ),
   );

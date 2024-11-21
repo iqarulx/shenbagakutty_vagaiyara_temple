@@ -28,7 +28,7 @@ TableRow tableData(BuildContext context, String leftData, String rightData) {
                 "-",
                 textAlign: TextAlign.end,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: AppColors.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
               ),
       ),
@@ -63,7 +63,7 @@ TableRow profileData(BuildContext context, String leftData, String rightData) {
                 "-",
                 textAlign: TextAlign.end,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: AppColors.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
               ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '/l10n/l10n.dart';
 import '/view/view.dart';
 import '/utils/utils.dart';
 
@@ -17,9 +18,9 @@ class _PdfViewState extends State<PdfView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Receipt Pdf"),
+        title: Text(AppLocalizations.of(context).receiptPdf),
         leading: IconButton(
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
             Navigator.pop(context);
@@ -27,7 +28,7 @@ class _PdfViewState extends State<PdfView> {
         ),
         actions: [
           IconButton(
-            tooltip: "Download Pdf",
+            tooltip: AppLocalizations.of(context).downloadPdf,
             icon: SvgPicture.asset(SvgAssets.download),
             onPressed: () async {
               await FileUtils.openFile(context, widget.uri, widget.name, 'pdf');

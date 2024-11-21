@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shimmer/shimmer.dart';
+import '/l10n/l10n.dart';
 import '/functions/functions.dart';
 import '/services/services.dart';
 import '/view/view.dart';
@@ -45,7 +46,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         future: _profileHanlder,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return futureWaitingLoading();
+            return futureWaitingLoading(context);
           } else if (snapshot.hasError) {
             return ErrorWidget(snapshot.error!);
           } else {
@@ -59,13 +60,13 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           onPressed: () {
             Navigator.pop(context);
           },
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
         ),
-        title: const Text("Profile"),
+        title: Text(AppLocalizations.of(context).profile),
         actions: [
           IconButton(
             icon: const Icon(Iconsax.refresh),
-            tooltip: "Refresh",
+            tooltip: AppLocalizations.of(context).refresh,
             onPressed: () {
               _profileHanlder = _getProfile();
               setState(() {});
@@ -73,7 +74,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           ),
           IconButton(
             icon: SvgPicture.asset(SvgAssets.pencil),
-            tooltip: "Edit",
+            tooltip: AppLocalizations.of(context).edit,
             onPressed: () async {
               var r = await Navigator.push(
                 context,
@@ -198,7 +199,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Member Id : ${_profileData["status_base_member_id"]}",
+                        "${AppLocalizations.of(context).memberId} : ${_profileData["status_base_member_id"]}",
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       Row(
@@ -229,14 +230,14 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 dragStartBehavior: DragStartBehavior.start,
                 controller: _tableTabController,
                 isScrollable: true,
-                labelColor: AppColors.primaryColor,
-                indicatorColor: AppColors.primaryColor,
+                labelColor: Theme.of(context).primaryColor,
+                indicatorColor: Theme.of(context).primaryColor,
                 unselectedLabelColor: AppColors.blackColor,
-                tabs: const [
-                  Tab(text: "Personal Details"),
-                  Tab(text: "Address"),
-                  Tab(text: "Member Images"),
-                  Tab(text: "Child Details")
+                tabs: [
+                  Tab(text: AppLocalizations.of(context).personalDetails),
+                  Tab(text: AppLocalizations.of(context).address),
+                  Tab(text: AppLocalizations.of(context).memberImages),
+                  Tab(text: AppLocalizations.of(context).childDetails),
                 ],
               ),
             ),
@@ -303,53 +304,55 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                       children: [
                         profileData(
                             context,
-                            "Birth Date",
+                            AppLocalizations.of(context).gender,
                             _profileData["children"][i]
                                 ["member_child_birth_date"]),
-                        profileData(context, "Gender",
+                        profileData(
+                            context,
+                            AppLocalizations.of(context).gender,
                             _profileData["children"][i]["member_child_gender"]),
                         profileData(
                             context,
-                            "Rasi",
+                            AppLocalizations.of(context).rasi,
                             UtilsFunctions.getRasiTamilName(
                                 rasi: _profileData["children"][i]
                                     ["member_child_rasi"])),
                         profileData(
                             context,
-                            "Natchathiram",
+                            AppLocalizations.of(context).natchathiram,
                             UtilsFunctions.getNatchathiramTamilName(
                                 natchathiram: _profileData["children"][i]
                                     ["member_child_natchathiram"])),
                         profileData(
                             context,
-                            "Birth Date",
+                            AppLocalizations.of(context).dateOfBirth,
                             _profileData["children"][i]
                                     ["member_child_birth_date"]
                                 .toString()),
                         profileData(
                             context,
-                            "Education",
+                            AppLocalizations.of(context).education,
                             _profileData["children"][i]
                                 ["member_child_education"]),
                         profileData(
                             context,
-                            "Job",
+                            AppLocalizations.of(context).job,
                             _profileData["children"][i]["member_child_job_name"]
                                 .toString()),
                         profileData(
                             context,
-                            "Marriage Status",
+                            AppLocalizations.of(context).marriageStatus,
                             _profileData["children"][i]
                                         ["member_child_marriage_status"] ==
                                     2
-                                ? "No"
-                                : "Yes"),
+                                ? AppLocalizations.of(context).no
+                                : AppLocalizations.of(context).yes),
                         if (_profileData["children"][i]
                                 ["member_child_marriage_status"] ==
                             1)
                           profileData(
                               context,
-                              "Partner Name",
+                              AppLocalizations.of(context).partnerName,
                               _profileData["children"][i]
                                   ["member_child_partner_name"]),
                         if (_profileData["children"][i]
@@ -357,7 +360,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                             1)
                           profileData(
                               context,
-                              "Partner Education",
+                              AppLocalizations.of(context).partnerEducation,
                               _profileData["children"][i]
                                   ["member_child_partner_education"]),
                         if (_profileData["children"][i]
@@ -365,7 +368,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                             1)
                           profileData(
                               context,
-                              "Partner Birth Date",
+                              AppLocalizations.of(context).partnerBirthDate,
                               _profileData["children"][i]
                                   ["member_child_partner_birth_date"]),
                         if (_profileData["children"][i]
@@ -373,7 +376,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                             1)
                           profileData(
                               context,
-                              "Marriage Date",
+                              AppLocalizations.of(context).marriageDate,
                               _profileData["children"][i]
                                   ["member_child_marriage_date"]),
                         if (_profileData["children"][i]
@@ -381,7 +384,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                             1)
                           profileData(
                               context,
-                              "Partner Rasi",
+                              AppLocalizations.of(context).partnerRasi,
                               UtilsFunctions.getRasiTamilName(
                                   rasi: _profileData["children"][i]
                                       ["member_child_partner_rasi"])),
@@ -390,7 +393,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                             1)
                           profileData(
                               context,
-                              "Partner Natchathiram",
+                              AppLocalizations.of(context).partnerNatchathiram,
                               UtilsFunctions.getNatchathiramTamilName(
                                   natchathiram: _profileData["children"][i]
                                       ["member_child_partner_natchathiram"])),
@@ -404,7 +407,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         ),
       );
     }
-    return noData();
+    return noData(context);
   }
 
   Widget _buildMemberImages() {
@@ -419,7 +422,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           children: [
             Column(
               children: [
-                Text("Profile Photo",
+                Text(AppLocalizations.of(context).profilePhoto,
                     style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(
                   height: 10,
@@ -468,7 +471,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
             ),
             Column(
               children: [
-                Text("Wife Photo",
+                Text(AppLocalizations.of(context).wifePhoto,
                     style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 10),
                 InkWell(
@@ -521,7 +524,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Family Photo", style: Theme.of(context).textTheme.bodyLarge),
+            Text(AppLocalizations.of(context).familyPhoto,
+                style: Theme.of(context).textTheme.bodyLarge),
             const SizedBox(
               height: 10,
             ),
@@ -596,42 +600,42 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           children: [
             profileData(
               context,
-              "Address",
+              AppLocalizations.of(context).address,
               _profileData["address"].toString(),
             ),
             profileData(
               context,
-              "Country",
+              AppLocalizations.of(context).country,
               _profileData["country"].toString().split(',').last,
             ),
             profileData(
               context,
-              "State",
+              AppLocalizations.of(context).state,
               _profileData["state"].toString(),
             ),
             profileData(
               context,
-              "City",
+              AppLocalizations.of(context).city,
               _profileData["city"].toString(),
             ),
             profileData(
               context,
-              "Pincode",
+              AppLocalizations.of(context).pincode,
               _profileData["pincode"].toString(),
             ),
             profileData(
               context,
-              "Company Name",
+              AppLocalizations.of(context).companyName,
               _profileData["company_name"].toString(),
             ),
             profileData(
               context,
-              "Remarks",
+              AppLocalizations.of(context).remarks,
               _profileData["remarks"].toString(),
             ),
             profileData(
               context,
-              "Histroy",
+              AppLocalizations.of(context).history,
               _profileData["member_history"].toString(),
             ),
           ],
@@ -648,84 +652,84 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           children: [
             profileData(
               context,
-              "Member Rasi",
+              AppLocalizations.of(context).rasi,
               UtilsFunctions.getRasiTamilName(
                   rasi: _profileData["rasi"].toString()),
             ),
             profileData(
               context,
-              "Member Natchathiram",
+              AppLocalizations.of(context).natchathiram,
               UtilsFunctions.getNatchathiramTamilName(
                   natchathiram: _profileData["natchathiram"].toString()),
             ),
             profileData(
               context,
-              "Profession",
+              AppLocalizations.of(context).profession,
               _profileData["profession_name"].toString(),
             ),
             profileData(
               context,
-              "Wife Name",
+              AppLocalizations.of(context).wifeName,
               _profileData["wife_name"].toString(),
             ),
             profileData(
               context,
-              "Wife Education",
+              AppLocalizations.of(context).wifeEducation,
               _profileData["wife_education"].toString(),
             ),
             profileData(
               context,
-              "Father ID",
+              AppLocalizations.of(context).fatherId,
               _profileData["father_id"].toString(),
             ),
             profileData(
               context,
-              "Family Order",
+              AppLocalizations.of(context).familyOrder,
               _profileData["family_order"].toString(),
             ),
             profileData(
               context,
-              "Aadhaar Number",
+              AppLocalizations.of(context).adhaarNumber,
               _profileData["aadhaar_number"].toString(),
             ),
             profileData(
               context,
-              "Introducer ID",
+              AppLocalizations.of(context).introducerId,
               _profileData["introducer_id"].toString(),
             ),
             profileData(
               context,
-              "Introducer Relationship",
+              AppLocalizations.of(context).introducerRelationship,
               _profileData["introducer_relationship"].toString(),
             ),
             profileData(
               context,
-              "Status",
+              AppLocalizations.of(context).status,
               _profileData["status_name"].toString(),
             ),
             profileData(
               context,
-              "Phone Number",
+              AppLocalizations.of(context).phoneNumber,
               _profileData["phone_number"].toString(),
             ),
             profileData(
               context,
-              "Mobile Number",
+              AppLocalizations.of(context).mobileNumber,
               _profileData["mobile_number"].toString(),
             ),
             profileData(
               context,
-              "Date Of Joining",
+              AppLocalizations.of(context).dateOfJoining,
               _profileData["date_of_joining"].toString(),
             ),
             profileData(
               context,
-              "Date of Deletion",
+              AppLocalizations.of(context).dateOfDeletion,
               _profileData["date_of_deletion"].toString(),
             ),
             profileData(
               context,
-              "Date of Rejoin",
+              AppLocalizations.of(context).dateOfJoining,
               _profileData["date_of_rejoin"].toString(),
             ),
           ],

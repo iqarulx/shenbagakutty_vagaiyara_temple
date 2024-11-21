@@ -30,4 +30,8 @@ class SvgAssets {
   static const String pencil = 'assets/svg/pencil.svg';
   static const String location = 'assets/svg/location.svg';
   static const String earthLock = 'assets/svg/earth-lock.svg';
+  static const String palette = 'assets/svg/palette.svg';
+  static const String moon = 'assets/svg/moon.svg';
+  static const String sun = 'assets/svg/sun.svg';
+  static const String language = 'assets/svg/language.svg';
 }

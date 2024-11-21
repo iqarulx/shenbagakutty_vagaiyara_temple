@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import '/l10n/l10n.dart';
 import '/view/view.dart';
 
 class Contact extends StatefulWidget {
@@ -17,13 +18,13 @@ class _ContactState extends State<Contact> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: const Text("Contact"),
+        title: Text(AppLocalizations.of(context).contact),
       ),
       body: ListView(
         padding: const EdgeInsets.all(10),
@@ -48,7 +49,7 @@ class _ContactState extends State<Contact> {
             child: Column(
               children: [
                 Text(
-                  "Contact Information",
+                  AppLocalizations.of(context).contactInformation,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -60,23 +61,33 @@ class _ContactState extends State<Contact> {
                   onPressed: () {
                     launchUrlString("tel:+919442722278");
                   },
-                  child: Text("Mobile : +91 94427 22278",
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  child: Text(
+                    AppLocalizations.of(context).mobile("+91 94427 22278"),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
                     launchUrlString("tel:+917305092278");
                   },
-                  child: Text("Mobile : +91 73050 92278",
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  child: Text(
+                    AppLocalizations.of(context).mobile("+91 73050 92278"),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
                     launchUrlString(
                         "mailto:hariharaputhraayyanar@gmail.com?subject=&body=");
                   },
-                  child: Text("Email : hariharaputhraayyanar@gmail.com",
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  child: Text(
+                    AppLocalizations.of(context)
+                        .email("hariharaputhraayyanar@gmail.com"),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
@@ -91,16 +102,20 @@ class _ContactState extends State<Contact> {
             child: Column(
               children: [
                 Text(
-                  "Address Information",
+                  AppLocalizations.of(context).addressInformation,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 5),
                 const Divider(),
                 const SizedBox(height: 5),
-                Text("Arulmighu Hariharaputhra Ayyanar Temple",
-                    style: Theme.of(context).textTheme.bodyLarge),
+                Text(
+                  AppLocalizations.of(context).addressTitle1,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
                 TextButton.icon(
                   icon: SvgPicture.asset(
                     SvgAssets.location,
@@ -113,7 +128,7 @@ class _ContactState extends State<Contact> {
                     await launchUrl(Uri.parse(url));
                   },
                   label: Text(
-                    "Kaliappa Nagar, Sivakasi, Tamil Nadu 626123",
+                    AppLocalizations.of(context).addressSubtitle1,
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: AppColors.greyColor,
                         ),
@@ -121,8 +136,11 @@ class _ContactState extends State<Contact> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text("Arulmighu Shenbaga Vinayagar Temple",
-                    style: Theme.of(context).textTheme.bodyLarge),
+                Text(
+                  AppLocalizations.of(context).addressTitle2,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
                 TextButton.icon(
                   icon: SvgPicture.asset(
                     SvgAssets.location,
@@ -135,7 +153,7 @@ class _ContactState extends State<Contact> {
                     await launchUrl(Uri.parse(url));
                   },
                   label: Text(
-                    "Sivakasi - Kalugumalai Rd, Kaliappa Nagar, Sivakasi, Tamil Nadu 626123",
+                    AppLocalizations.of(context).addressSubtitle2,
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: AppColors.greyColor,
                         ),

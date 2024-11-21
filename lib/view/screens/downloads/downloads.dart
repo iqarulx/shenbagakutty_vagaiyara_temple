@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
+import '/l10n/l10n.dart';
 import '/view/view.dart';
 import '/services/services.dart';
 
@@ -52,31 +53,33 @@ class _DownloadsState extends State<Downloads> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Downloads"),
+        title: Text(AppLocalizations.of(context).downloads),
         leading: IconButton(
           icon:
               const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
         ),
         actions: [
           IconButton(
-            tooltip: "Delete Downloads",
+            tooltip: AppLocalizations.of(context).deleteDownloads,
             onPressed: () async {
               var dr = await showDialog(
                 barrierDismissible: false,
                 context: context,
-                builder: (context) => const CDialog(
-                  title: "Delete",
-                  content: "Are you sure want to delete all downloads?",
+                builder: (context) => CDialog(
+                  title: AppLocalizations.of(context).deleteDownloadsTitle,
+                  content: AppLocalizations.of(context).deleteDownloadsSubtitle,
                 ),
               );
               if (dr != null && dr) {
                 await DownloadService.clearDownloads().then((value) {
                   Snackbar.showSnackBar(context,
-                      content: "Downloads deleted", isSuccess: true);
+                      content: AppLocalizations.of(context)
+                          .deleteDownloadsSuccessMsg,
+                      isSuccess: true);
                   dHanlder = fetchDownloads();
                   setState(() {});
                 });
@@ -90,12 +93,12 @@ class _DownloadsState extends State<Downloads> {
         future: dHanlder,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return futureWaitingLoading();
+            return futureWaitingLoading(context);
           } else if (snapshot.hasError) {
             return ErrorWidget(snapshot.error!);
           } else {
             if (downloadsList.isEmpty) {
-              return noData();
+              return noData(context);
             }
 
             return ListView.separated(
@@ -111,20 +114,21 @@ class _DownloadsState extends State<Downloads> {
                     OpenFile.open(d[index]["location"]);
                   },
                   leading: CircleAvatar(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
                     child: Text(
                       d[index]["file_type"],
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   title: Text(
-                    d[index]["file_name"] ?? "No file name",
+                    d[index]["file_name"] ??
+                        AppLocalizations.of(context).noFileName,
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(DateFormat('dd-MM-yyyy hh:mm a')
                       .format(d[index]["created"])),
                   trailing: IconButton(
-                    tooltip: "Open File",
+                    tooltip: AppLocalizations.of(context).openFile,
                     icon: const Icon(Icons.open_in_new_outlined),
                     onPressed: () {
                       OpenFile.open(d[index]["location"]);

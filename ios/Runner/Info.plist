@@ -32,11 +32,11 @@
 			<true/>
 		</dict>
 		<key>NSCameraUsageDescription</key>
-		<string>This app requires access to the camera.</string>
+		<string>We need access to your camera to allow you to upload profile photos for temple activities.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need access to your photo library so you can upload images for your profile for temple events.</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>This app does not require access to the microphone.</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app requires access to the photo library.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIBackgroundModes</key>

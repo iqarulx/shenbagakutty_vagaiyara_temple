@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '/l10n/l10n.dart';
 import '/services/db/db.dart';
 import '/constants/constants.dart';
 import '/functions/functions.dart';
@@ -57,7 +58,7 @@ class _AddReceiptState extends State<AddReceipt> {
                 child: FormFields(
                   suffixIcon: const Icon(Iconsax.calendar_1),
                   controller: _rDate,
-                  label: "Receipt Date",
+                  label: AppLocalizations.of(context).receiptDate,
                   hintText: "yyyy-MM-dd",
                   onTap: () => _rDatePicker(),
                   readOnly: true,
@@ -66,11 +67,11 @@ class _AddReceiptState extends State<AddReceipt> {
               const SizedBox(width: 10),
               Expanded(
                 child: FormFields(
-                  label: "Receipt Type (*)",
+                  label: "${AppLocalizations.of(context).receiptType} (*)",
                   suffixIcon: _rType.text.isEmpty
                       ? const Icon(Icons.arrow_drop_down_rounded)
                       : IconButton(
-                          tooltip: "Clear",
+                          tooltip: AppLocalizations.of(context).clear,
                           onPressed: () {
                             _rType.clear();
                             selectedRTypeId = null;
@@ -79,11 +80,11 @@ class _AddReceiptState extends State<AddReceipt> {
                           },
                           icon: Icon(
                             Iconsax.close_circle,
-                            color: AppColors.primaryColor,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                   controller: _rType,
-                  hintText: "Type",
+                  hintText: AppLocalizations.of(context).receiptType,
                   onTap: () async {
                     var value = await Sheet.showSheet(context,
                         size: 0.9, widget: RType(query: widget.rList));
@@ -109,7 +110,7 @@ class _AddReceiptState extends State<AddReceipt> {
                   valid: (input) {
                     if (input != null) {
                       if (input.isEmpty) {
-                        return 'Select Receipt Type';
+                        return AppLocalizations.of(context).selectReceiptType;
                       }
                     }
                     return null;
@@ -125,11 +126,11 @@ class _AddReceiptState extends State<AddReceipt> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: FormFields(
-                      label: "Member (*)",
+                      label: "${AppLocalizations.of(context).member} (*)",
                       suffixIcon: _member.text.isEmpty
                           ? const Icon(Icons.arrow_drop_down_rounded)
                           : IconButton(
-                              tooltip: "Clear",
+                              tooltip: AppLocalizations.of(context).clear,
                               onPressed: () {
                                 _member.clear();
                                 selectedMemberId = null;
@@ -137,7 +138,7 @@ class _AddReceiptState extends State<AddReceipt> {
                               },
                               icon: Icon(
                                 Iconsax.close_circle,
-                                color: AppColors.primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                       controller: _member,
@@ -154,7 +155,7 @@ class _AddReceiptState extends State<AddReceipt> {
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Select Member';
+                            return AppLocalizations.of(context).selectMember;
                           }
                         }
                         return null;
@@ -167,11 +168,11 @@ class _AddReceiptState extends State<AddReceipt> {
                     child: FormFields(
                       controller: _amount,
                       keyType: TextInputType.number,
-                      label: "Amount (*)",
+                      label: "${AppLocalizations.of(context).amount} (*)",
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter amount';
+                            return AppLocalizations.of(context).emterAmount;
                           }
                         }
                         return null;
@@ -183,11 +184,11 @@ class _AddReceiptState extends State<AddReceipt> {
                     padding: const EdgeInsets.only(top: 10),
                     child: FormFields(
                       controller: _funeralTo,
-                      label: "Funeral To",
+                      label: AppLocalizations.of(context).funeralTo,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the funeral to';
+                            return AppLocalizations.of(context).enterFuneralTo;
                           }
                         }
                         return null;
@@ -199,7 +200,7 @@ class _AddReceiptState extends State<AddReceipt> {
                     padding: const EdgeInsets.only(top: 10),
                     child: FormFields(
                       controller: _nMemberName,
-                      label: "Non-Member Name",
+                      label: AppLocalizations.of(context).nonMemberName,
                       enabled: selectedMemberId == null,
                       valid: (input) {
                         if (_member.text.isNotEmpty) {
@@ -207,7 +208,7 @@ class _AddReceiptState extends State<AddReceipt> {
                         }
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the name or select member';
+                            return AppLocalizations.of(context).nonMemberError;
                           }
                         }
                         return null;
@@ -220,14 +221,14 @@ class _AddReceiptState extends State<AddReceipt> {
                     child: FormFields(
                       suffixIcon: const Icon(Iconsax.calendar_1),
                       controller: _functionDate,
-                      label: "Function Date",
+                      label: AppLocalizations.of(context).functionDate,
                       hintText: "yyyy-MM-dd",
                       onTap: () => _fDatePicker(),
                       readOnly: true,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Select Date';
+                            return AppLocalizations.of(context).selectDate;
                           }
                         }
                         return null;
@@ -240,11 +241,11 @@ class _AddReceiptState extends State<AddReceipt> {
                     child: FormFields(
                       controller: _countForMudiKanikai,
                       keyType: TextInputType.number,
-                      label: "Count For MudiKanikai",
+                      label: AppLocalizations.of(context).countForMudiKanikai,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the count';
+                            return AppLocalizations.of(context).countError;
                           }
                         }
                         return null;
@@ -257,11 +258,11 @@ class _AddReceiptState extends State<AddReceipt> {
                     child: FormFields(
                       controller: _countForKadhuKuthu,
                       keyType: TextInputType.number,
-                      label: "Count For Kadhu Kuthu",
+                      label: AppLocalizations.of(context).countForKathukuthu,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the count';
+                            return AppLocalizations.of(context).countError;
                           }
                         }
                         return null;
@@ -273,12 +274,13 @@ class _AddReceiptState extends State<AddReceipt> {
                     padding: const EdgeInsets.only(top: 10),
                     child: FormFields(
                       controller: _description,
-                      label: "Description",
+                      label: AppLocalizations.of(context).decription,
                       maxLines: 2,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the description';
+                            return AppLocalizations.of(context)
+                                .enterDescription;
                           }
                         }
                         return null;
@@ -290,12 +292,12 @@ class _AddReceiptState extends State<AddReceipt> {
                     padding: const EdgeInsets.only(top: 10),
                     child: FormFields(
                       controller: _yearAmount,
-                      label: "Year Amount",
+                      label: AppLocalizations.of(context).yearAmount,
                       enabled: false,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the year amount';
+                            return AppLocalizations.of(context).enterYearAmount;
                           }
                         }
                         return null;
@@ -307,12 +309,13 @@ class _AddReceiptState extends State<AddReceipt> {
                     padding: const EdgeInsets.only(top: 10),
                     child: FormFields(
                       controller: _poojaiFromDate,
-                      label: "Poojai From Date",
+                      label: AppLocalizations.of(context).poojaiFromDate,
                       enabled: false,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the Poojai From Date';
+                            return AppLocalizations.of(context)
+                                .poojaiFromDateError;
                           }
                         }
                         return null;
@@ -325,11 +328,12 @@ class _AddReceiptState extends State<AddReceipt> {
                     child: FormFields(
                       enabled: false,
                       controller: _poojaiToDate,
-                      label: "Poojai To Date",
+                      label: AppLocalizations.of(context).poojaiToDate,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the Poojai To Date';
+                            return AppLocalizations.of(context)
+                                .poojaiToDateError;
                           }
                         }
                         return null;
@@ -342,11 +346,12 @@ class _AddReceiptState extends State<AddReceipt> {
                     child: FormFields(
                       enabled: false,
                       controller: _poojaiAmount,
-                      label: "Poojai Amount",
+                      label: AppLocalizations.of(context).poojaiAmount,
                       valid: (input) {
                         if (input != null) {
                           if (input.isEmpty) {
-                            return 'Enter the Poojai Amount';
+                            return AppLocalizations.of(context)
+                                .poojaiAmountError;
                           }
                         }
                         return null;
@@ -363,13 +368,13 @@ class _AddReceiptState extends State<AddReceipt> {
   AppBar _appbar(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        tooltip: "Back",
+        tooltip: AppLocalizations.of(context).back,
         icon: const Icon(Icons.arrow_back_ios_new_rounded),
         onPressed: () {
           Navigator.pop(context);
         },
       ),
-      title: const Text("Add Receipt"),
+      title: Text(AppLocalizations.of(context).addReceipt),
     );
   }
 
@@ -379,7 +384,8 @@ class _AddReceiptState extends State<AddReceipt> {
       surfaceTintColor: Colors.white,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
+          backgroundColor:
+              MaterialStateProperty.all(Theme.of(context).primaryColor),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           minimumSize: MaterialStateProperty.all(const Size(80, 30)),
           padding: MaterialStateProperty.all(EdgeInsets.zero),
@@ -395,7 +401,7 @@ class _AddReceiptState extends State<AddReceipt> {
             Icon(Iconsax.tick_circle, color: AppColors.pureWhiteColor),
             const SizedBox(width: 10),
             Text(
-              "Submit",
+              AppLocalizations.of(context).submit,
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge!

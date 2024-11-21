@@ -5,6 +5,7 @@
 */
 
 import 'package:flutter/material.dart';
+import '/l10n/l10n.dart';
 import '/view/view.dart';
 
 class CDialog extends StatefulWidget {
@@ -45,12 +46,13 @@ class _CDialogState extends State<CDialog> {
                   ),
                   child: Center(
                     child: Text(
-                      "Cancel",
+                      AppLocalizations.of(context).cancel,
                       style: TextStyle(
                         color: AppColors.greyColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -66,16 +68,17 @@ class _CDialogState extends State<CDialog> {
                   height: 55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                   child: Center(
                     child: Text(
-                      "Confirm",
+                      AppLocalizations.of(context).confirm,
                       style: TextStyle(
                         color: AppColors.whiteColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),

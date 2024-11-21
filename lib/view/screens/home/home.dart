@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-
+import '/l10n/l10n.dart';
 import '/view/view.dart';
 
 class Home extends StatefulWidget {
@@ -30,9 +30,9 @@ class _HomeState extends State<Home> {
             scaffoldKey.currentState?.openDrawer();
           },
           icon: const Icon(Icons.menu_rounded),
-          tooltip: "Back",
+          tooltip: AppLocalizations.of(context).back,
         ),
-        title: const Text("Dashboard"),
+        title: Text(AppLocalizations.of(context).dashboard),
         actions: [
           IconButton(
             onPressed: () {
@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
               }));
             },
             icon: const Icon(Iconsax.notification_bing),
-            tooltip: "Notification",
+            tooltip: AppLocalizations.of(context).notification,
           )
         ],
       ),
@@ -76,7 +76,7 @@ class _HomeState extends State<Home> {
               children: [
                 const SizedBox(height: 10),
                 Text(
-                  "Temple Photos",
+                  AppLocalizations.of(context).templePhotos,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 10),

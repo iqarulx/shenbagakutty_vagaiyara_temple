@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '/l10n/l10n.dart';
 
-Widget noData() {
+Widget noData(context) {
   return Center(
     child: Container(
       margin: const EdgeInsets.all(20),
@@ -15,9 +16,9 @@ Widget noData() {
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            "No records",
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context).noRecords,
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -31,7 +32,7 @@ Widget noData() {
             height: 5,
           ),
           Text(
-            "No data available to show",
+            AppLocalizations.of(context).noRecordsSubtitle,
             style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
             textAlign: TextAlign.center,
           ),
@@ -44,7 +45,7 @@ Widget noData() {
   );
 }
 
-Widget noDataTable() {
+Widget noDataTable(context) {
   return Expanded(
     child: Center(
       child: Container(
@@ -60,9 +61,9 @@ Widget noDataTable() {
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              "No records",
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).noRecords,
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -76,7 +77,7 @@ Widget noDataTable() {
               height: 5,
             ),
             Text(
-              "No data available to show",
+              AppLocalizations.of(context).noRecordsSubtitle,
               style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
               textAlign: TextAlign.center,
             ),
