@@ -17,6 +17,8 @@ class ReceiptService {
       "receipt_form/new_member_registration/save.php";
   static const String _oldThalakattu = "receipt_form/old_thalakattu/save.php";
   static const String _newThalakattu = "receipt_form/new_thalakattu/save.php";
+  static const String _newThalakattuForm =
+      "receipt_form/new_thalakattu/form.php";
   static const String _personalSavings =
       "receipt_form/personal_savings/save.php";
   static const String _poojaDonation = "receipt_form/pooja_donation/save.php";
@@ -100,6 +102,31 @@ class ReceiptService {
         "page_limit": pageLimit
       };
       final uri = Uri.parse("$_apiUrl/$_route");
+      final response = await http.post(uri, body: json.encode(queryParameters));
+      if (response.statusCode == 200) {
+        if (response.body.isNotEmpty) {
+          var d = response.body; // Data
+          var r = jsonDecode(d); // Result
+          if (r["head"]["code"] == 200) {
+            return r;
+          } else {
+            throw r["head"]["msg"];
+          }
+        } else {
+          throw apiErrorText;
+        }
+      } else {
+        throw apiErrorText;
+      }
+    } catch (error) {
+      throw error.toString();
+    }
+  }
+
+  static Future<Map<String, dynamic>> getNewThalakattuForm() async {
+    try {
+      final queryParameters = {"edit_id": ""};
+      final uri = Uri.parse("$_apiUrl/$_newThalakattuForm");
       final response = await http.post(uri, body: json.encode(queryParameters));
       if (response.statusCode == 200) {
         if (response.body.isNotEmpty) {

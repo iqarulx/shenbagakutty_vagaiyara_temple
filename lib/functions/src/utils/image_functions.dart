@@ -5,7 +5,7 @@ import '/constants/constants.dart';
 import '/services/services.dart';
 
 class ImageFunctions {
-  static Future uploadImage(context,
+  static Future<bool> uploadImage(context,
       {required ImageType type, required File file, String? prefix}) async {
     try {
       futureLoading(context);
@@ -15,10 +15,13 @@ class ImageFunctions {
       if (data.isNotEmpty) {
         Snackbar.showSnackBar(context,
             content: "Image Updated Successfully", isSuccess: true);
+        return true;
       }
+      return false;
     } catch (e) {
       Navigator.pop(context);
       Snackbar.showSnackBar(context, content: e.toString(), isSuccess: false);
+      return false;
     }
   }
 }

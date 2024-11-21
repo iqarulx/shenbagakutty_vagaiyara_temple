@@ -19,17 +19,14 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> with TickerProviderStateMixin {
-  late Future _profileHanlder;
-  Map<String, dynamic> _profileData = {};
-  TabController? _tableTabController;
-
   @override
   void initState() {
     _tableTabController = TabController(length: 4, vsync: this);
-
     _profileHanlder = _getProfile();
     super.initState();
   }
+
+  //***************** Tils *********************/
 
   _getProfile() async {
     try {
@@ -40,6 +37,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
     }
   }
 
+  //***************** UI *********************/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,22 +139,42 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                       color: AppColors.pureWhiteColor,
                     ),
                     child: ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl: _profileData["member_profile_photos"],
-                        placeholder: (context, url) => Shimmer.fromColors(
-                          baseColor: Colors.grey.shade300,
-                          highlightColor: Colors.grey.shade100,
-                          child: Container(
-                            width: 150,
-                            height: 150,
-                            color: Colors.white,
+                      child: InkWell(
+                        onTap: () {
+                          if (_profileData["member_profile_photos"]
+                              .toString()
+                              .isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(builder: (context) {
+                                return Preview(
+                                    uri: _profileData["member_profile_photos"]
+                                        .toString());
+                              }),
+                            );
+                          }
+                        },
+                        child: CachedNetworkImage(
+                          imageUrl: _profileData["member_profile_photos"]
+                                  .toString()
+                                  .isNotEmpty
+                              ? _profileData["member_profile_photos"].toString()
+                              : emptyProfilePhoto,
+                          placeholder: (context, url) => Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              width: 150,
+                              height: 150,
+                              color: Colors.white,
+                            ),
                           ),
+                          fit: BoxFit.cover,
+                          width: 70,
+                          height: 70,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
-                        fit: BoxFit.cover,
-                        width: 70,
-                        height: 70,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
                       ),
                     ),
                   ),
@@ -306,13 +324,18 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                             context,
                             "Birth Date",
                             _profileData["children"][i]
-                                    ["member_child_mobile_number"]
+                                    ["member_child_birth_date"]
                                 .toString()),
                         profileData(
                             context,
                             "Education",
                             _profileData["children"][i]
                                 ["member_child_education"]),
+                        profileData(
+                            context,
+                            "Job",
+                            _profileData["children"][i]["member_child_job_name"]
+                                .toString()),
                         profileData(
                             context,
                             "Marriage Status",
@@ -401,28 +424,44 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 const SizedBox(
                   height: 10,
                 ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    imageUrl: _profileData["member_profile_photos"]
-                            .toString()
-                            .isNotEmpty
-                        ? _profileData["member_profile_photos"].toString()
-                        : emptyProfilePhoto,
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade100,
-                      child: Container(
-                        width: 200,
-                        height: 200,
-                        color: Colors.white,
+                InkWell(
+                  onTap: () {
+                    if (_profileData["member_profile_photos"]
+                        .toString()
+                        .isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) {
+                          return Preview(
+                              uri: _profileData["member_profile_photos"]
+                                  .toString());
+                        }),
+                      );
+                    }
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl: _profileData["member_profile_photos"]
+                              .toString()
+                              .isNotEmpty
+                          ? _profileData["member_profile_photos"].toString()
+                          : emptyProfilePhoto,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          color: Colors.white,
+                        ),
                       ),
+                      fit: BoxFit.cover,
+                      width: 100,
+                      height: 100,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
-                    fit: BoxFit.cover,
-                    width: 100,
-                    height: 100,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
                   ),
                 ),
               ],
@@ -432,27 +471,44 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 Text("Wife Photo",
                     style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 10),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        _profileData["member_wife_photos"].toString().isNotEmpty
-                            ? _profileData["member_wife_photos"].toString()
-                            : emptyProfilePhoto,
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade100,
-                      child: Container(
-                        width: 200,
-                        height: 200,
-                        color: Colors.white,
+                InkWell(
+                  onTap: () {
+                    if (_profileData["member_wife_photos"]
+                        .toString()
+                        .isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) {
+                          return Preview(
+                              uri: _profileData["member_wife_photos"]
+                                  .toString());
+                        }),
+                      );
+                    }
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl: _profileData["member_wife_photos"]
+                              .toString()
+                              .isNotEmpty
+                          ? _profileData["member_wife_photos"].toString()
+                          : emptyProfilePhoto,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          color: Colors.white,
+                        ),
                       ),
+                      fit: BoxFit.cover,
+                      width: 100,
+                      height: 100,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
-                    fit: BoxFit.cover,
-                    width: 100,
-                    height: 100,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
                   ),
                 ),
               ],
@@ -476,28 +532,45 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                   for (var i = 0;
                       i < _profileData["member_family_photos"].length;
                       i++)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: _profileData["member_family_photos"][i]
-                                .toString()
-                                .isNotEmpty
-                            ? _profileData["member_family_photos"][i].toString()
-                            : emptyProfilePhoto,
-                        placeholder: (context, url) => Shimmer.fromColors(
-                          baseColor: Colors.grey.shade300,
-                          highlightColor: Colors.grey.shade100,
-                          child: Container(
-                            width: 200,
-                            height: 200,
-                            color: Colors.white,
+                    InkWell(
+                      onTap: () {
+                        if (_profileData["member_family_photos"][i]
+                            .toString()
+                            .isNotEmpty) {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(builder: (context) {
+                              return Preview(
+                                  uri: _profileData["member_family_photos"][i]
+                                      .toString());
+                            }),
+                          );
+                        }
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          imageUrl: _profileData["member_family_photos"][i]
+                                  .toString()
+                                  .isNotEmpty
+                              ? _profileData["member_family_photos"][i]
+                                  .toString()
+                              : emptyProfilePhoto,
+                          placeholder: (context, url) => Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              width: 200,
+                              height: 200,
+                              color: Colors.white,
+                            ),
                           ),
+                          fit: BoxFit.cover,
+                          width: 100,
+                          height: 100,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
                       ),
                     ),
                 ],
@@ -660,4 +733,10 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
       ),
     );
   }
+  //***************** End of UI *********************/
+
+  //***************** Variables *********************/
+  late Future _profileHanlder;
+  Map<String, dynamic> _profileData = {};
+  TabController? _tableTabController;
 }

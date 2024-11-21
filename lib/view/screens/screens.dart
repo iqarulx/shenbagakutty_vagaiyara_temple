@@ -8,3 +8,5 @@ export 'mandapam/mandapam.dart';
 export 'downloads/downloads.dart';
 export 'notif/notif.dart';
 export 'qr/qr.dart';
+export 'preview/preview.dart';
+export 'contact/contact.dart';

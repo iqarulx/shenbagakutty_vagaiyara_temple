@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shenbagakutty_vagaiyara/model/model.dart';
+import '/model/model.dart';
 import '/view/view.dart';
 
 class RType extends StatefulWidget {

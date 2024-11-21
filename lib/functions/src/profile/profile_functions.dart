@@ -14,9 +14,10 @@ class ProfileFunctions {
     }
   }
 
-  static Future updateProfile({required Map<String, dynamic> query}) async {
+  static Future<Map<String, dynamic>> updateProfile(
+      {required Map<String, dynamic> query}) async {
     try {
-      await ProfileService.updateProfile(query: query);
+      return await ProfileService.updateProfile(query: query);
     } catch (e) {
       throw e.toString();
     }

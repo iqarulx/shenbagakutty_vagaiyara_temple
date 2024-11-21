@@ -11,10 +11,10 @@ class AuthFunctions {
         var data = result["head"];
 
         return UserModel(
-          memberId: data["member_id"],
-          mobileNumber: data["mobile_number"],
-          memberName: data["name"],
-          profilePhoto: data["profile_photo"],
+          memberId: data["member_id"].toString(),
+          mobileNumber: data["mobile_number"].toString(),
+          memberName: data["name"].toString(),
+          profilePhoto: data["profile_photo"].toString(),
           receiptVolunteer: data["receipt_volunteer"],
         );
       }

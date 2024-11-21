@@ -20,27 +20,6 @@ class Receipt extends StatefulWidget {
 }
 
 class _ReceiptState extends State<Receipt> {
-  late Future _receiptHandler;
-  Map<String, dynamic> rData = {};
-  List<ReceiptModel> rList = [];
-  List<RTypeModel> rTList = [];
-  List<MemberModel> mList = [];
-
-  final TextEditingController _member = TextEditingController();
-  final TextEditingController _pageNo = TextEditingController();
-  final TextEditingController _pageLimit = TextEditingController();
-  final TextEditingController _nonMember = TextEditingController();
-  final TextEditingController _rCategory = TextEditingController();
-  final TextEditingController _rType = TextEditingController();
-  final TextEditingController _fromDate = TextEditingController();
-  final TextEditingController _toDate = TextEditingController();
-  final TextEditingController _search = TextEditingController();
-
-  String? selectedMemberId;
-  String? selectedNonMemberId;
-  String? selectedRCategoryId;
-  String? selectedRTypeId;
-
   @override
   void initState() {
     _pageNo.text = "1";
@@ -50,6 +29,7 @@ class _ReceiptState extends State<Receipt> {
     _receiptHandler = _init();
     _addListeners([
       _member,
+      _creatorMember,
       _nonMember,
       _rCategory,
       _rType,
@@ -62,6 +42,7 @@ class _ReceiptState extends State<Receipt> {
   void dispose() {
     for (var controller in [
       _member,
+      _creatorMember,
       _nonMember,
       _rCategory,
       _rType,
@@ -72,132 +53,7 @@ class _ReceiptState extends State<Receipt> {
     super.dispose();
   }
 
-  void _addListeners(List<TextEditingController> controllers) {
-    for (var controller in controllers) {
-      controller.addListener(() {
-        setState(() {});
-      });
-    }
-  }
-
-  _init() async {
-    try {
-      setState(() {
-        rList.clear();
-        rData.clear();
-        rTList.clear();
-      });
-      var data = await ReceiptFunctions.listing(
-        pageNo: _pageNo.text,
-        pageLimit: _pageLimit.text,
-        fromDate: _fromDate.text,
-        toDate: _toDate.text,
-        rCId: selectedRCategoryId,
-        rTId: selectedRTypeId,
-        mId: selectedMemberId,
-        lMId: selectedMemberId,
-        nMName: selectedNonMemberId,
-        searchText: _search.text,
-      );
-
-      if (data.isNotEmpty) {
-        rData = data["head"];
-        var d = data["body"];
-        for (var i in rData["receipt_type"]) {
-          rTList.add(
-            RTypeModel(
-              aId: i["automatic_id"].toString(),
-              id: i["receipt_type_id"].toString(),
-              name: i["receipt_type_name"].toString(),
-              inputs: i["inputs"] != null
-                  ? (i["inputs"] as List).map((e) => e.toString()).toList()
-                  : [],
-            ),
-          );
-        }
-
-        for (var i in rData["listing_member"]) {
-          mList.add(
-            MemberModel(
-              id: i["id"].toString(),
-              name: i["name"].toString(),
-              mobileNumber: i["mobile_number"].toString(),
-            ),
-          );
-        }
-
-        for (var i in d) {
-          rList.add(
-            ReceiptModel(
-              creatorName: i["creator_name"].toString(),
-              receiptId: i["receipt_id"].toString(),
-              receiptDate: i["receipt_date"].toString(),
-              receiptNumber: i["receipt_number"].toString(),
-              colorCode: i["color_code"].toString(),
-              statusBaseMemberId: i["status_base_member_id"].toString(),
-              memberName: i["member_name"].toString(),
-              yearAmount: i["year_amount"].toString(),
-              poojaiFromDate: i["poojai_from_date"].toString(),
-              poojaiToDate: i["poojai_to_date"].toString(),
-              poojaiAmount: i["poojai_amount"].toString(),
-              amount: i["amount"].toString(),
-              description: i["description"].toString(),
-              functionDate: i["function_date"].toString(),
-              countForMudikanikai: i["count_for_mudikanikai"].toString(),
-              countForKadhuKuthu: i["count_for_kadhu_kuthu"].toString(),
-              funeralTo: i["funeral_to"].toString(),
-              receiptTypeId: i["receipt_type_id"].toString(),
-              receiptTypeName: i["receipt_type_name"].toString(),
-              formName: i["form_name"].toString(),
-              receiptPrintUrl: i["receipt_print_url"].toString(),
-            ),
-          );
-        }
-      }
-      setState(() {});
-    } catch (e) {
-      Snackbar.showSnackBar(context, content: e.toString(), isSuccess: false);
-    }
-  }
-
-  _fromPicker() async {
-    final DateTime? picked = await datePicker(context);
-    if (picked != null) {
-      setState(() {
-        _fromDate.text = DateFormat('yyyy-MM-dd').format(picked);
-        _receiptHandler = _init();
-      });
-    }
-  }
-
-  _toPicker() async {
-    final DateTime? picked = await datePicker(context);
-    if (picked != null) {
-      setState(() {
-        _toDate.text = DateFormat('yyyy-MM-dd').format(picked);
-        _receiptHandler = _init();
-      });
-    }
-  }
-
-  _createReceipt() async {
-    if (rData.isNotEmpty) {
-      if (mList.isNotEmpty && rList.isNotEmpty) {
-        var r = await Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => AddReceipt(mList: mList, rList: rTList),
-          ),
-        );
-        if (r != null) {
-          if (r) {
-            _receiptHandler = _init();
-          }
-        }
-      }
-    }
-  }
-
+  //***************** UI *********************/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -320,12 +176,27 @@ class _ReceiptState extends State<Receipt> {
                       ],
                     ),
                   ),
-                  trailing: Text(
-                    rList[index].receiptDate,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(fontWeight: FontWeight.bold),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        rList[index].receiptDate,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 3),
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Color(int.parse(rList[index].colorCode)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(rList[index].receiptNumber,
+                            style: TextStyle(color: AppColors.pureWhiteColor)),
+                      )
+                    ],
                   ),
                 );
               }
@@ -349,12 +220,13 @@ class _ReceiptState extends State<Receipt> {
                 "Receipt List",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              Text(
-                "Total Records : ${rList.length}",
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: AppColors.primaryColor,
-                    ),
-              ),
+              if (_totalReceipt != null)
+                Text(
+                  "Total Records : $_totalReceipt",
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: AppColors.primaryColor,
+                      ),
+                ),
             ],
           ),
         ),
@@ -384,7 +256,7 @@ class _ReceiptState extends State<Receipt> {
                     context,
                     size: 0.9,
                     widget: PageNo(
-                      total: rList.length,
+                      total: int.parse(_totalReceipt ?? "0"),
                       pageLimit: int.parse(_pageLimit.text),
                     ),
                   );
@@ -540,6 +412,43 @@ class _ReceiptState extends State<Receipt> {
             SizedBox(
               width: 200,
               child: FormFields(
+                suffixIcon: _creatorMember.text.isEmpty
+                    ? const Icon(Icons.arrow_drop_down_rounded)
+                    : IconButton(
+                        tooltip: "Clear",
+                        onPressed: () {
+                          _creatorMember.clear();
+                          selectedCreatorMemberId = null;
+                          _receiptHandler = _init();
+
+                          setState(() {});
+                        },
+                        icon: Icon(
+                          Iconsax.close_circle,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                controller: _creatorMember,
+                hintText: "Creator Member",
+                onTap: () async {
+                  var value = await Sheet.showSheet(context,
+                      size: 0.9,
+                      widget: CreatorMember(
+                        query: cMList,
+                      ));
+                  if (value != null) {
+                    _creatorMember.text = value["value"];
+                    selectedCreatorMemberId = value["id"];
+                    _receiptHandler = _init();
+                  }
+                },
+                readOnly: true,
+              ),
+            ),
+            const SizedBox(width: 5),
+            SizedBox(
+              width: 200,
+              child: FormFields(
                 suffixIcon: _nonMember.text.isEmpty
                     ? const Icon(Icons.arrow_drop_down_rounded)
                     : IconButton(
@@ -612,4 +521,170 @@ class _ReceiptState extends State<Receipt> {
       ),
     );
   }
+  //***************** End of UI *********************/
+
+  //***************** Utils *********************/
+
+  void _addListeners(List<TextEditingController> controllers) {
+    for (var controller in controllers) {
+      controller.addListener(() {
+        setState(() {});
+      });
+    }
+  }
+
+  _init() async {
+    try {
+      setState(() {
+        rList.clear();
+        rData.clear();
+        rTList.clear();
+        cMList.clear();
+      });
+      var data = await ReceiptFunctions.listing(
+        pageNo: _pageNo.text,
+        pageLimit: _pageLimit.text,
+        fromDate: _fromDate.text,
+        toDate: _toDate.text,
+        rCId: selectedRCategoryId,
+        rTId: selectedRTypeId,
+        mId: selectedMemberId,
+        lMId: selectedMemberId,
+        nMName: selectedNonMemberId,
+        rC: selectedCreatorMemberId,
+        searchText: _search.text,
+      );
+
+      if (data.isNotEmpty) {
+        rData = data["head"];
+        var d = data["body"];
+        _totalReceipt = rData["receipt_count"].toString();
+        for (var i in rData["receipt_type"]) {
+          rTList.add(
+            RTypeModel(
+              aId: i["automatic_id"].toString(),
+              id: i["receipt_type_id"].toString(),
+              name: i["receipt_type_name"].toString(),
+              inputs: i["inputs"] != null
+                  ? (i["inputs"] as List).map((e) => e.toString()).toList()
+                  : [],
+            ),
+          );
+        }
+
+        for (var i in rData["listing_member"]) {
+          mList.add(
+            MemberModel(
+              id: i["id"].toString(),
+              name: i["name"].toString(),
+              mobileNumber: i["mobile_number"].toString(),
+            ),
+          );
+        }
+        for (var i in rData["create_member"]) {
+          cMList.add(
+            CreatorMemberModel(
+              id: i["id"].toString(),
+              name: i["name"].toString(),
+            ),
+          );
+        }
+
+        for (var i in d) {
+          rList.add(
+            ReceiptModel(
+              creatorName: i["creator_name"].toString(),
+              receiptId: i["receipt_id"].toString(),
+              receiptDate: i["receipt_date"].toString(),
+              receiptNumber: i["receipt_number"].toString(),
+              colorCode: i["color_code"].toString(),
+              statusBaseMemberId: i["status_base_member_id"].toString(),
+              memberName: i["member_name"].toString(),
+              yearAmount: i["year_amount"].toString(),
+              poojaiFromDate: i["poojai_from_date"].toString(),
+              poojaiToDate: i["poojai_to_date"].toString(),
+              poojaiAmount: i["poojai_amount"].toString(),
+              amount: i["amount"].toString(),
+              description: i["description"].toString(),
+              functionDate: i["function_date"].toString(),
+              countForMudikanikai: i["count_for_mudikanikai"].toString(),
+              countForKadhuKuthu: i["count_for_kadhu_kuthu"].toString(),
+              funeralTo: i["funeral_to"].toString(),
+              receiptTypeId: i["receipt_type_id"].toString(),
+              receiptTypeName: i["receipt_type_name"].toString(),
+              formName: i["form_name"].toString(),
+              receiptPrintUrl: i["receipt_print_url"].toString(),
+            ),
+          );
+        }
+      }
+      setState(() {});
+    } catch (e) {
+      Snackbar.showSnackBar(context, content: e.toString(), isSuccess: false);
+    }
+  }
+
+  _fromPicker() async {
+    final DateTime? picked = await datePicker(context);
+    if (picked != null) {
+      setState(() {
+        _fromDate.text = DateFormat('yyyy-MM-dd').format(picked);
+        _receiptHandler = _init();
+      });
+    }
+  }
+
+  _toPicker() async {
+    final DateTime? picked = await datePicker(context);
+    if (picked != null) {
+      setState(() {
+        _toDate.text = DateFormat('yyyy-MM-dd').format(picked);
+        _receiptHandler = _init();
+      });
+    }
+  }
+
+  _createReceipt() async {
+    if (rData.isNotEmpty) {
+      if (mList.isNotEmpty && rList.isNotEmpty) {
+        var r = await Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => AddReceipt(mList: mList, rList: rTList),
+          ),
+        );
+        if (r != null) {
+          if (r) {
+            _receiptHandler = _init();
+          }
+        }
+      }
+    }
+  }
+
+  //***************** Variables *********************/
+  late Future _receiptHandler;
+  Map<String, dynamic> rData = {};
+  List<ReceiptModel> rList = [];
+  List<RTypeModel> rTList = [];
+  List<MemberModel> mList = [];
+  List<CreatorMemberModel> cMList = [];
+
+  final TextEditingController _member = TextEditingController();
+  final TextEditingController _creatorMember = TextEditingController();
+  final TextEditingController _pageNo = TextEditingController();
+  final TextEditingController _pageLimit = TextEditingController();
+  final TextEditingController _nonMember = TextEditingController();
+  final TextEditingController _rCategory = TextEditingController();
+  final TextEditingController _rType = TextEditingController();
+  final TextEditingController _fromDate = TextEditingController();
+  final TextEditingController _toDate = TextEditingController();
+  final TextEditingController _search = TextEditingController();
+
+  String? selectedMemberId;
+  String? selectedCreatorMemberId;
+  String? selectedNonMemberId;
+  String? selectedRCategoryId;
+  String? selectedRTypeId;
+  String? _totalReceipt;
 }

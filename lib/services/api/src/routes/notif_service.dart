@@ -11,7 +11,6 @@ class NotifService {
     try {
       var memberId = await Db.getData(type: UserData.memberId);
       final queryParameters = {"notification_view_member_id": memberId};
-      print(json.encode(queryParameters));
       final uri = Uri.parse("$_apiUrl/$_route");
       final response = await http.post(uri, body: json.encode(queryParameters));
 

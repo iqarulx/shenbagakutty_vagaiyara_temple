@@ -28,4 +28,6 @@ class SvgAssets {
   static const String tick = 'assets/svg/tick.svg';
   static const String qr = 'assets/svg/qr.svg';
   static const String pencil = 'assets/svg/pencil.svg';
+  static const String location = 'assets/svg/location.svg';
+  static const String earthLock = 'assets/svg/earth-lock.svg';
 }

@@ -64,6 +64,7 @@ class _MandapamState extends State<Mandapam> {
                     onPressed: () {
                       _mandapam.clear();
                       _selectedMandapamId = null;
+                      _mandapamHandler = _init();
                       setState(() {});
                     },
                     icon: Icon(
@@ -125,12 +126,20 @@ class _MandapamState extends State<Mandapam> {
                   date.month == details.date.month &&
                   date.day == details.date.day);
 
+              final bool isToday = details.date.year == DateTime.now().year &&
+                  details.date.month == DateTime.now().month &&
+                  details.date.day == DateTime.now().day;
+
               return Container(
                 margin: const EdgeInsets.all(4),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isBooked ? AppColors.primaryColor : null,
+                  color: isToday
+                      ? Colors.red.withOpacity(0.7) // Highlight today's date
+                      : isBooked
+                          ? AppColors.primaryColor
+                          : null,
                   border: isBooked
                       ? Border.all(color: AppColors.primaryColor)
                       : Border.all(color: Colors.transparent),
@@ -138,9 +147,12 @@ class _MandapamState extends State<Mandapam> {
                 child: Text(
                   details.date.day.toString(),
                   style: TextStyle(
-                    color: isBooked
-                        ? AppColors.pureWhiteColor
-                        : AppColors.blackColor,
+                    color: isToday
+                        ? AppColors
+                            .pureWhiteColor // Text color for today's date
+                        : isBooked
+                            ? AppColors.pureWhiteColor
+                            : AppColors.blackColor,
                   ),
                 ),
               );
@@ -192,11 +204,10 @@ class _MandapamState extends State<Mandapam> {
   _customDatePicker() async {
     final DateTime? picked = await datePicker(context);
     if (picked != null) {
-      setState(() {
-        _customDate.text = DateFormat('dd-MM-yyyy').format(picked);
-        _selectedCustomDate = picked;
-        _mandapamHandler = _init();
-      });
+      _customDate.text = DateFormat('dd-MM-yyyy').format(picked);
+      _selectedCustomDate = picked;
+      _mandapamHandler = _init();
+      setState(() {});
       _calendarController.displayDate = picked;
     }
   }

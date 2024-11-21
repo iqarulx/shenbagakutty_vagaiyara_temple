@@ -45,37 +45,4 @@ class AuthService {
       throw error.toString();
     }
   }
-
-  // static Future<Map<String, dynamic>> sendOtp(
-  //     {required String memberLoginId, required String password}) async {
-  //   try {
-  //     final queryParameters = {
-  //       'member_login_id': memberLoginId,
-  //       'password': password,
-  //       'verify_otp_number': null,
-  //       'mobile_number': mobileNumber,
-  //       'member_id': memberId,
-  //       'fcm_id': await Messaging.getFCM(),
-  //     };
-  //     final uri = Uri.parse("$_apiUrl/$_route");
-  //     final response = await http.post(uri, body: jsonEncode(queryParameters));
-  //     if (response.statusCode == 200) {
-  //       if (response.body.isNotEmpty) {
-  //         var d = response.body; // Data
-  //         var r = jsonDecode(d); // Result
-  //         if (r["head"]["code"] == 200) {
-  //           return r;
-  //         } else {
-  //           throw r["head"]["msg"];
-  //         }
-  //       } else {
-  //         throw apiErrorText;
-  //       }
-  //     } else {
-  //       throw apiErrorText;
-  //     }
-  //   } catch (error) {
-  //     throw error.toString();
-  //   }
-  // }
 }

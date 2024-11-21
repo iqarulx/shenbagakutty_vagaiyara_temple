@@ -52,4 +52,18 @@ class ReceiptFunctions {
       throw e.toString();
     }
   }
+
+  static Future<Map<String, dynamic>> getNewThalakattuForm() async {
+    try {
+      Map<String, dynamic> result = {};
+      var r = await ReceiptService.getNewThalakattuForm();
+
+      if (r.isNotEmpty) {
+        result = r;
+      }
+      return result;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
 }

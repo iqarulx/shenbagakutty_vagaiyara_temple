@@ -4,17 +4,18 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:shenbagakutty_vagaiyara/model/model.dart';
 import 'package:shimmer/shimmer.dart';
 import '/constants/constants.dart';
 import '/functions/functions.dart';
 import '/services/services.dart';
 import '/utils/utils.dart';
 import '/view/view.dart';
+import '/model/model.dart';
 
 class ProfileEdit extends StatefulWidget {
   final Map<String, dynamic> profileData; // Profile Data
@@ -76,260 +77,7 @@ class _ProfileEditState extends State<ProfileEdit>
     super.dispose();
   }
 
-  void _addListeners(List<TextEditingController> controllers) {
-    for (var controller in controllers) {
-      controller.addListener(() {
-        setState(() {});
-      });
-    }
-  }
-
-  List<ChildModel> childList = [];
-  List<File?> selectedChildPhoto = [];
-
-  _init() async {
-    var data = widget.profileData;
-    _memberName.text = data["initial"].toString();
-    _initial.text = data["name"].toString();
-    _rasi.text = UtilsFunctions.getRasiTamilName(rasi: data["rasi"].toString());
-    _selectedRasi = data["rasi"].toString();
-    _natchathiram.text = UtilsFunctions.getNatchathiramTamilName(
-        natchathiram: data["natchathiram"].toString());
-    _selectedNatchathiram = data["natchathiram"].toString();
-    _wifeName.text = data["wife_name"].toString();
-    _wifeEducation.text = data["wife_education"].toString();
-    _profession.text = data["profession_name"].toString();
-    _selectedProfessionId = data["profession_id"].toString();
-    _wifeRasi.text =
-        UtilsFunctions.getRasiTamilName(rasi: data["wife_rasi"].toString());
-    _selectedWifeRasi = data["wife_rasi"].toString();
-    _wifeNatchathiram.text = UtilsFunctions.getNatchathiramTamilName(
-        natchathiram: data["wife_natchathiram"].toString());
-    _selectedWifeNatchathiram = data["wife_natchathiram"].toString();
-    _fatherId.text = data["father_id"].toString();
-    _fatherName.text = data["father_name"].toString();
-    _familyOrder.text = data["family_order"].toString();
-    _introducerId.text = data["introducer_id"].toString();
-    _introducerRelationship.text = data["introducer_relationship"].toString();
-    _status.text = data["status_name"].toString();
-    _phoneNumber.text = data["phone_number"].toString();
-    _mobileNumber.text = data["mobile_number"].toString();
-    _adhaarNumber.text = data["aadhaar_number"].toString();
-    _doj = data["date_of_joining"].toString();
-    _dod = data["date_of_deletion"].toString();
-    _dor = data["date_of_rejoin"].toString();
-    _country.text = data["country"].toString().split(',').last;
-    _selectedCountryIndex = data["country_index"].toString();
-    _state.text = data["state"].toString();
-    _city.text = data["city"].toString();
-    _address.text = data["address"].toString();
-    _pincode.text = data["pincode"].toString();
-    _companyName.text = data["company_name"].toString();
-    _remarks.text = data["remarks"].toString();
-    _profilePhoto = data["member_profile_photos"].isNotEmpty
-        ? data["member_profile_photos"]
-        : null;
-    _wifePhoto = data["member_wife_photos"].isNotEmpty
-        ? data["member_wife_photos"]
-        : null;
-    _familyPhoto = data["member_family_photos"].isNotEmpty
-        ? (data["member_family_photos"] as List)
-            .map((e) => e.toString())
-            .toList()
-        : null;
-
-    for (var d = 0; d < data["children"].length; d++) {
-      var i = data["children"][d];
-      selectedChildPhoto.add(null);
-
-      childList.add(
-        ChildModel(
-          id: i["member_child_id"].toString(),
-          profilePhotoEdit: true,
-          childNameController:
-              TextEditingController(text: i["member_child_name"].toString()),
-          childEducationController: TextEditingController(
-              text: i["member_child_education"].toString()),
-          childJobController:
-              TextEditingController(text: i["member_child_job"].toString()),
-          childInitialController:
-              TextEditingController(text: i["member_child_initial"].toString()),
-          childDobController: TextEditingController(
-              text: i["member_child_birth_date"].toString()),
-          childRasiController: TextEditingController(
-              text: UtilsFunctions.getRasiTamilName(
-                  rasi: i["member_child_rasi"].toString())),
-          childNatchathiramController: TextEditingController(
-              text: UtilsFunctions.getNatchathiramTamilName(
-                  natchathiram: i["member_child_natchathiram"].toString())),
-          childMobileNumberController: TextEditingController(
-              text: i["member_child_mobile_number"].toString()),
-          lifePartnerNameController: TextEditingController(
-              text: i["member_child_partner_name"].toString()),
-          lifePatnerEducationController: TextEditingController(
-              text: i["member_child_partner_education"].toString()),
-          marriageDateController: TextEditingController(
-              text: i["member_child_marriage_date"].toString()),
-          lifePartnerRasiController: TextEditingController(
-              text: UtilsFunctions.getRasiTamilName(
-                  rasi: i["member_child_partner_rasi"].toString())),
-          lifePartnerNatchathiramController: TextEditingController(
-              text: UtilsFunctions.getNatchathiramTamilName(
-                  natchathiram:
-                      i["member_child_partner_natchathiram"].toString())),
-          lifePartnerDobController: TextEditingController(
-              text: i["member_child_partner_birth_date"].toString()),
-          childGender: i["member_child_gender"].toString(),
-          childMarrigeStatus: i["member_child_marriage_status"].toString(),
-          selectedChildRasi: i["member_child_rasi"].toString(),
-          selectedChildNatchathiram: i["member_child_natchathiram"].toString(),
-          selectedLifePartnerRasi: i["member_child_partner_rasi"].toString(),
-          selectedLifePartnerNatchathiram:
-              i["member_child_partner_natchathiram"].toString(),
-        ),
-      );
-    }
-  }
-
-  TabController? _tabController;
-
-  _saveProfile() async {
-    try {
-      futureLoading(context);
-
-      var memberId = await Db.getData(type: UserData.memberId);
-      var memberName = await Db.getData(type: UserData.memberName);
-      Map<String, dynamic> updateData = {};
-
-      if (_tabController?.index == 0) {
-        updateData = {
-          "type": "personal",
-          "update_member_id": memberId,
-          "date_of_birth": "",
-          "rasi": _selectedRasi,
-          "natchathiram": _selectedNatchathiram,
-          "profession_id": _selectedProfessionId,
-          "wife_name": _wifeName.text,
-          "wife_education": _wifeEducation.text,
-          "wife_date_of_birth": "",
-          "wife_rasi": _selectedWifeRasi,
-          "wife_natchathiram": _selectedWifeNatchathiram,
-          "marriage_date": "",
-          "phone_number": _phoneNumber.text,
-          "mobile_number": _mobileNumber.text,
-          "aadhaar_number": _adhaarNumber.text,
-          "creator": memberId,
-          "creator_name": memberName,
-        };
-      } else if (_tabController?.index == 1) {
-        updateData = {
-          "type": "address",
-          "update_member_id": memberId,
-          "address": _address.text,
-          "city": _city.text,
-          "pincode": _pincode.text,
-          "state": _state.text,
-          "country": _country.text,
-          "company_name": _companyName.text,
-          "remarks": _remarks.text,
-          "member_history": _history.text,
-          "creator": memberId,
-          "creator_name": memberName,
-        };
-      } else if (_tabController?.index == 3) {
-        updateData = {
-          "type": "child",
-          "update_member_id": memberId,
-          "children": [],
-          "creator": memberId,
-          "creator_name": memberName,
-        };
-
-        var childMapDetails = [];
-
-        for (var i = 0; i < childList.length; i++) {
-          var childDetails = {
-            "member_child${i}_id": childList[i].id ?? "",
-            "member_child${i}_initial":
-                childList[i].childInitialController.text,
-            "member_child${i}_name": childList[i].childNameController.text,
-            "member_child${i}_gender": childList[i].childGender ?? "",
-            "member_child${i}_birth_date": childList[i].childDobController.text,
-            "member_child${i}_rasi": childList[i].selectedChildRasi ?? "",
-            "member_child${i}_natchathiram":
-                childList[i].selectedChildNatchathiram ?? "",
-            "member_child${i}_education":
-                childList[i].childEducationController.text,
-            "member_child${i}_job": childList[i].childJobController.text,
-            "member_child${i}_marriage_status":
-                childList[i].childMarrigeStatus ?? "",
-            "member_child${i}_mobile_number":
-                childList[i].childMobileNumberController.text,
-            "member_child${i}_photo": "",
-          };
-
-          childDetails["member_child${i}_partner_name"] =
-              childList[i].lifePartnerNameController.text;
-          childDetails["member_child${i}_partner_education"] =
-              childList[i].lifePatnerEducationController.text;
-          childDetails["member_child${i}_partner_birth_date"] =
-              childList[i].lifePartnerDobController.text;
-          childDetails["member_child${i}_marriage_date"] =
-              childList[i].marriageDateController.text;
-          childDetails["member_child${i}_partner_rasi"] =
-              childList[i].selectedLifePartnerRasi ?? "";
-          childDetails["member_child${i}_partner_natchathiram"] =
-              childList[i].selectedLifePartnerNatchathiram ?? "";
-
-          childMapDetails.add(childDetails);
-        }
-
-        updateData["children"] = childMapDetails;
-      }
-
-      await ProfileFunctions.updateProfile(query: updateData).then((value) {
-        Navigator.pop(context);
-        Snackbar.showSnackBar(context,
-            content: "Updated Successfully", isSuccess: true);
-      });
-    } catch (e) {
-      Navigator.pop(context);
-      print(e.toString());
-      Snackbar.showSnackBar(context, content: e.toString(), isSuccess: false);
-    }
-  }
-
-  _addNewChild() {
-    selectedChildPhoto.add(null);
-    childList.add(
-      ChildModel(
-        id: null,
-        profilePhotoEdit: false,
-        childNameController: TextEditingController(),
-        childEducationController: TextEditingController(),
-        childJobController: TextEditingController(),
-        childInitialController: TextEditingController(),
-        childDobController: TextEditingController(),
-        childRasiController: TextEditingController(),
-        childNatchathiramController: TextEditingController(),
-        childMobileNumberController: TextEditingController(),
-        lifePartnerNameController: TextEditingController(),
-        lifePatnerEducationController: TextEditingController(),
-        marriageDateController: TextEditingController(),
-        lifePartnerRasiController: TextEditingController(),
-        lifePartnerNatchathiramController: TextEditingController(),
-        lifePartnerDobController: TextEditingController(),
-        childGender: null,
-        childMarrigeStatus: null,
-        selectedChildRasi: null,
-        selectedChildNatchathiram: null,
-        selectedLifePartnerRasi: null,
-        selectedLifePartnerNatchathiram: null,
-      ),
-    );
-    setState(() {});
-  }
-
+  //***************** UI *********************/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -346,15 +94,6 @@ class _ProfileEditState extends State<ProfileEdit>
         ],
       ),
     );
-  }
-
-  _dobPicker(TextEditingController c) async {
-    final DateTime? picked = await datePicker(context);
-    if (picked != null) {
-      setState(() {
-        c.text = DateFormat('yyyy-MM-dd').format(picked);
-      });
-    }
   }
 
   ListView _childView() {
@@ -426,23 +165,26 @@ class _ProfileEditState extends State<ProfileEdit>
                                   width: 150,
                                   height: 150,
                                 )
-                              : CachedNetworkImage(
-                                  imageUrl: emptyProfilePhoto,
-                                  placeholder: (context, url) =>
-                                      Shimmer.fromColors(
-                                    baseColor: Colors.grey.shade300,
-                                    highlightColor: Colors.grey.shade100,
-                                    child: Container(
-                                      width: 150,
-                                      height: 150,
-                                      color: Colors.white,
+                              : InkWell(
+                                  onTap: () {},
+                                  child: CachedNetworkImage(
+                                    imageUrl: emptyProfilePhoto,
+                                    placeholder: (context, url) =>
+                                        Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        width: 150,
+                                        height: 150,
+                                        color: Colors.white,
+                                      ),
                                     ),
+                                    fit: BoxFit.contain,
+                                    width: 150,
+                                    height: 150,
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
-                                  fit: BoxFit.contain,
-                                  width: 150,
-                                  height: 150,
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
                                 ),
                         ),
                         if (childList[i].profilePhotoEdit)
@@ -463,10 +205,15 @@ class _ProfileEditState extends State<ProfileEdit>
                                   if (v != null) {
                                     var pr = await PickImage.pickImage(v);
                                     if (pr != null) {
-                                      selectedChildPhoto[i] = pr;
-                                      await ImageFunctions.uploadImage(context,
-                                          type: ImageType.child, file: pr);
-
+                                      var v = await ImageFunctions.uploadImage(
+                                        context,
+                                        type: ImageType.child,
+                                        file: pr,
+                                        prefix: i.toString(),
+                                      );
+                                      if (v) {
+                                        selectedChildPhoto[i] = pr;
+                                      }
                                       setState(() {});
                                     }
                                   }
@@ -702,11 +449,49 @@ class _ProfileEditState extends State<ProfileEdit>
                           width: 10,
                         ),
                         Expanded(
-                          child: FormFields(
-                            controller: childList[i].childJobController,
-                            label: "Job",
-                          ),
-                        ),
+                            child: FormFields(
+                          suffixIcon:
+                              childList[i].childJobController.text.isEmpty
+                                  ? const Icon(Icons.arrow_drop_down_rounded)
+                                  : IconButton(
+                                      tooltip: "Clear",
+                                      onPressed: () {
+                                        childList[i].childJobController.clear();
+                                        childList[i].selectedChildJob = null;
+
+                                        setState(() {});
+                                      },
+                                      icon: Icon(
+                                        Iconsax.close_circle,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    ),
+                          controller: childList[i].childJobController,
+                          label: "Job",
+                          hintText: "Select",
+                          onTap: () async {
+                            var value = await Sheet.showSheet(context,
+                                size: 0.9,
+                                widget: Profession(
+                                    profData:
+                                        widget.profileData["profession"]));
+                            if (value != null) {
+                              childList[i].childJobController.text =
+                                  value["code"];
+                              childList[i].selectedChildJob = value["id"];
+                              setState(() {});
+                            }
+                          },
+                          readOnly: true,
+                          // valid: (input) {
+                          //   if (input != null) {
+                          //     if (input.isEmpty) {
+                          //       return 'Select site';
+                          //     }
+                          //   }
+                          //   return null;
+                          // },
+                        )),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -994,22 +779,35 @@ class _ProfileEditState extends State<ProfileEdit>
                             width: 150,
                             height: 150,
                           )
-                        : CachedNetworkImage(
-                            imageUrl: _profilePhoto ?? emptyProfilePhoto,
-                            placeholder: (context, url) => Shimmer.fromColors(
-                              baseColor: Colors.grey.shade300,
-                              highlightColor: Colors.grey.shade100,
-                              child: Container(
-                                width: 150,
-                                height: 150,
-                                color: Colors.white,
+                        : InkWell(
+                            onTap: () {
+                              if (_profilePhoto != null) {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(builder: (context) {
+                                    return Preview(
+                                        uri: _profilePhoto.toString());
+                                  }),
+                                );
+                              }
+                            },
+                            child: CachedNetworkImage(
+                              imageUrl: _profilePhoto ?? emptyProfilePhoto,
+                              placeholder: (context, url) => Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                child: Container(
+                                  width: 150,
+                                  height: 150,
+                                  color: Colors.white,
+                                ),
                               ),
+                              fit: BoxFit.contain,
+                              width: 150,
+                              height: 150,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
-                            fit: BoxFit.contain,
-                            width: 150,
-                            height: 150,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
                           ),
                   ),
                   Positioned(
@@ -1029,10 +827,11 @@ class _ProfileEditState extends State<ProfileEdit>
                           if (v != null) {
                             var pr = await PickImage.pickImage(v);
                             if (pr != null) {
-                              _selectedProfilePhoto = pr;
-                              await ImageFunctions.uploadImage(context,
+                              var v = await ImageFunctions.uploadImage(context,
                                   type: ImageType.profile, file: pr);
-
+                              if (v) {
+                                _selectedProfilePhoto = pr;
+                              }
                               setState(() {});
                             }
                           }
@@ -1060,22 +859,34 @@ class _ProfileEditState extends State<ProfileEdit>
                           width: 150,
                           height: 150,
                         )
-                      : CachedNetworkImage(
-                          imageUrl: _wifePhoto ?? emptyProfilePhoto,
-                          placeholder: (context, url) => Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade100,
-                            child: Container(
-                              width: 150,
-                              height: 150,
-                              color: Colors.white,
+                      : InkWell(
+                          onTap: () {
+                            if (_wifePhoto != null) {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(builder: (context) {
+                                  return Preview(uri: _wifePhoto.toString());
+                                }),
+                              );
+                            }
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: _wifePhoto ?? emptyProfilePhoto,
+                            placeholder: (context, url) => Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                width: 150,
+                                height: 150,
+                                color: Colors.white,
+                              ),
                             ),
+                            fit: BoxFit.contain,
+                            width: 150,
+                            height: 150,
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                           ),
-                          fit: BoxFit.contain,
-                          width: 150,
-                          height: 150,
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
                         ),
                 ),
                 Positioned(
@@ -1095,9 +906,11 @@ class _ProfileEditState extends State<ProfileEdit>
                         if (v != null) {
                           var pr = await PickImage.pickImage(v);
                           if (pr != null) {
-                            _selectedWifePhoto = pr;
-                            await ImageFunctions.uploadImage(context,
+                            var v = await ImageFunctions.uploadImage(context,
                                 file: pr, type: ImageType.wife);
+                            if (v) {
+                              _selectedWifePhoto = pr;
+                            }
                             setState(() {});
                           }
                         }
@@ -1128,23 +941,42 @@ class _ProfileEditState extends State<ProfileEdit>
                                 width: 150,
                                 height: 150,
                               )
-                            : CachedNetworkImage(
-                                imageUrl: _familyPhoto?[0] ?? emptyProfilePhoto,
-                                placeholder: (context, url) =>
-                                    Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade300,
-                                  highlightColor: Colors.grey.shade100,
-                                  child: Container(
-                                    width: 150,
-                                    height: 150,
-                                    color: Colors.white,
+                            : InkWell(
+                                onTap: () {
+                                  if (_familyPhoto != null &&
+                                      _familyPhoto!.isNotEmpty) {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(builder: (context) {
+                                        return Preview(
+                                            uri: _familyPhoto![0].toString());
+                                      }),
+                                    );
+                                  }
+                                },
+                                child: CachedNetworkImage(
+                                  imageUrl: _familyPhoto != null &&
+                                          _familyPhoto!.isNotEmpty
+                                      ? (_familyPhoto!.isNotEmpty
+                                          ? _familyPhoto![0]
+                                          : emptyProfilePhoto)
+                                      : emptyProfilePhoto,
+                                  placeholder: (context, url) =>
+                                      Shimmer.fromColors(
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.grey.shade100,
+                                    child: Container(
+                                      width: 150,
+                                      height: 150,
+                                      color: Colors.white,
+                                    ),
                                   ),
+                                  fit: BoxFit.contain,
+                                  width: 150,
+                                  height: 150,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
-                                fit: BoxFit.contain,
-                                width: 150,
-                                height: 150,
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
                               ),
                       ),
                       Positioned(
@@ -1164,14 +996,15 @@ class _ProfileEditState extends State<ProfileEdit>
                               if (v != null) {
                                 var pr = await PickImage.pickImage(v);
                                 if (pr != null) {
-                                  _selectedFamilyPhoto1 = pr;
-
-                                  await ImageFunctions.uploadImage(
+                                  var v = await ImageFunctions.uploadImage(
                                     context,
                                     file: pr,
                                     type: ImageType.family,
                                     prefix: "1",
                                   );
+                                  if (v) {
+                                    _selectedFamilyPhoto1 = pr;
+                                  }
                                   setState(() {});
                                 }
                               }
@@ -1191,23 +1024,44 @@ class _ProfileEditState extends State<ProfileEdit>
                                 width: 150,
                                 height: 150,
                               )
-                            : CachedNetworkImage(
-                                imageUrl: _familyPhoto?[1] ?? emptyProfilePhoto,
-                                placeholder: (context, url) =>
-                                    Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade300,
-                                  highlightColor: Colors.grey.shade100,
-                                  child: Container(
-                                    width: 150,
-                                    height: 150,
-                                    color: Colors.white,
+                            : InkWell(
+                                onTap: () {
+                                  if (_familyPhoto != null &&
+                                      _familyPhoto!.isNotEmpty) {
+                                    if (_familyPhoto!.length > 1) {
+                                      Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(builder: (context) {
+                                          return Preview(
+                                              uri: _familyPhoto![1].toString());
+                                        }),
+                                      );
+                                    }
+                                  }
+                                },
+                                child: CachedNetworkImage(
+                                  imageUrl: _familyPhoto != null &&
+                                          _familyPhoto!.isNotEmpty
+                                      ? (_familyPhoto!.length > 1
+                                          ? _familyPhoto![1]
+                                          : emptyProfilePhoto)
+                                      : emptyProfilePhoto,
+                                  placeholder: (context, url) =>
+                                      Shimmer.fromColors(
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.grey.shade100,
+                                    child: Container(
+                                      width: 150,
+                                      height: 150,
+                                      color: Colors.white,
+                                    ),
                                   ),
+                                  fit: BoxFit.contain,
+                                  width: 150,
+                                  height: 150,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
-                                fit: BoxFit.contain,
-                                width: 150,
-                                height: 150,
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
                               ),
                       ),
                       Positioned(
@@ -1227,13 +1081,15 @@ class _ProfileEditState extends State<ProfileEdit>
                               if (v != null) {
                                 var pr = await PickImage.pickImage(v);
                                 if (pr != null) {
-                                  _selectedFamilyPhoto2 = pr;
-                                  await ImageFunctions.uploadImage(
+                                  var v = await ImageFunctions.uploadImage(
                                     context,
                                     file: pr,
                                     type: ImageType.family,
                                     prefix: "2",
                                   );
+                                  if (v) {
+                                    _selectedFamilyPhoto2 = pr;
+                                  }
                                   setState(() {});
                                 }
                               }
@@ -1256,22 +1112,43 @@ class _ProfileEditState extends State<ProfileEdit>
                             width: 150,
                             height: 150,
                           )
-                        : CachedNetworkImage(
-                            imageUrl: _familyPhoto?[2] ?? emptyProfilePhoto,
-                            placeholder: (context, url) => Shimmer.fromColors(
-                              baseColor: Colors.grey.shade300,
-                              highlightColor: Colors.grey.shade100,
-                              child: Container(
-                                width: 150,
-                                height: 150,
-                                color: Colors.white,
+                        : InkWell(
+                            onTap: () {
+                              if (_familyPhoto != null &&
+                                  _familyPhoto!.isNotEmpty) {
+                                if (_familyPhoto!.length > 2) {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(builder: (context) {
+                                      return Preview(
+                                          uri: _familyPhoto![2].toString());
+                                    }),
+                                  );
+                                }
+                              }
+                            },
+                            child: CachedNetworkImage(
+                              imageUrl: _familyPhoto != null &&
+                                      _familyPhoto!.isNotEmpty
+                                  ? (_familyPhoto!.length > 2
+                                      ? _familyPhoto![2]
+                                      : emptyProfilePhoto)
+                                  : emptyProfilePhoto,
+                              placeholder: (context, url) => Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                child: Container(
+                                  width: 150,
+                                  height: 150,
+                                  color: Colors.white,
+                                ),
                               ),
+                              fit: BoxFit.contain,
+                              width: 150,
+                              height: 150,
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
-                            fit: BoxFit.contain,
-                            width: 150,
-                            height: 150,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
                           ),
                   ),
                   Positioned(
@@ -1291,13 +1168,15 @@ class _ProfileEditState extends State<ProfileEdit>
                           if (v != null) {
                             var pr = await PickImage.pickImage(v);
                             if (pr != null) {
-                              _selectedFamilyPhoto3 = pr;
-                              await ImageFunctions.uploadImage(
+                              var v = await ImageFunctions.uploadImage(
                                 context,
                                 file: pr,
                                 type: ImageType.family,
                                 prefix: "3",
                               );
+                              if (v) {
+                                _selectedFamilyPhoto3 = pr;
+                              }
                               setState(() {});
                             }
                           }
@@ -1893,6 +1772,269 @@ class _ProfileEditState extends State<ProfileEdit>
       ),
     );
   }
+  //***************** End of UI *********************/
+
+  //***************** Utils *********************/
+
+  void _addListeners(List<TextEditingController> controllers) {
+    for (var controller in controllers) {
+      controller.addListener(() {
+        setState(() {});
+      });
+    }
+  }
+
+  _dobPicker(TextEditingController c) async {
+    final DateTime? picked = await datePicker(context);
+    if (picked != null) {
+      setState(() {
+        c.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
+
+  _init() async {
+    var data = widget.profileData;
+    _memberName.text = data["initial"].toString();
+    _initial.text = data["name"].toString();
+    _rasi.text = UtilsFunctions.getRasiTamilName(rasi: data["rasi"].toString());
+    _selectedRasi = data["rasi"].toString();
+    _natchathiram.text = UtilsFunctions.getNatchathiramTamilName(
+        natchathiram: data["natchathiram"].toString());
+    _selectedNatchathiram = data["natchathiram"].toString();
+    _wifeName.text = data["wife_name"].toString();
+    _wifeEducation.text = data["wife_education"].toString();
+    _profession.text = data["profession_name"].toString();
+    _selectedProfessionId = data["profession_id"].toString();
+    _wifeRasi.text =
+        UtilsFunctions.getRasiTamilName(rasi: data["wife_rasi"].toString());
+    _selectedWifeRasi = data["wife_rasi"].toString();
+    _wifeNatchathiram.text = UtilsFunctions.getNatchathiramTamilName(
+        natchathiram: data["wife_natchathiram"].toString());
+    _selectedWifeNatchathiram = data["wife_natchathiram"].toString();
+    _fatherId.text = data["father_id"].toString();
+    _fatherName.text = data["father_name"].toString();
+    _familyOrder.text = data["family_order"].toString();
+    _introducerId.text = data["introducer_id"].toString();
+    _introducerRelationship.text = data["introducer_relationship"].toString();
+    _status.text = data["status_name"].toString();
+    _phoneNumber.text = data["phone_number"].toString();
+    _mobileNumber.text = data["mobile_number"].toString();
+    _adhaarNumber.text = data["aadhaar_number"].toString();
+    _doj = data["date_of_joining"].toString();
+    _dod = data["date_of_deletion"].toString();
+    _dor = data["date_of_rejoin"].toString();
+    _country.text = data["country"].toString().split(',').last;
+    _selectedCountryIndex = data["country_index"].toString();
+    _state.text = data["state"].toString();
+    _city.text = data["city"].toString();
+    _address.text = data["address"].toString();
+    _pincode.text = data["pincode"].toString();
+    _companyName.text = data["company_name"].toString();
+    _remarks.text = data["remarks"].toString();
+    _profilePhoto = data["member_profile_photos"].isNotEmpty
+        ? data["member_profile_photos"]
+        : null;
+    _wifePhoto = data["member_wife_photos"].isNotEmpty
+        ? data["member_wife_photos"]
+        : null;
+    _familyPhoto = data["member_family_photos"].isNotEmpty
+        ? (data["member_family_photos"] as List)
+            .map((e) => e.toString())
+            .toList()
+        : null;
+
+    for (var d = 0; d < data["children"].length; d++) {
+      var i = data["children"][d];
+      selectedChildPhoto.add(null);
+
+      childList.add(
+        ChildModel(
+          id: i["member_child_id"].toString(),
+          profilePhotoEdit: true,
+          childNameController:
+              TextEditingController(text: i["member_child_name"].toString()),
+          childEducationController: TextEditingController(
+              text: i["member_child_education"].toString()),
+          childJobController: TextEditingController(
+              text: i["member_child_job_name"].toString()),
+          childInitialController:
+              TextEditingController(text: i["member_child_initial"].toString()),
+          childDobController: TextEditingController(
+              text: i["member_child_birth_date"].toString()),
+          childRasiController: TextEditingController(
+              text: UtilsFunctions.getRasiTamilName(
+                  rasi: i["member_child_rasi"].toString())),
+          childNatchathiramController: TextEditingController(
+              text: UtilsFunctions.getNatchathiramTamilName(
+                  natchathiram: i["member_child_natchathiram"].toString())),
+          childMobileNumberController: TextEditingController(
+              text: i["member_child_mobile_number"].toString()),
+          lifePartnerNameController: TextEditingController(
+              text: i["member_child_partner_name"].toString()),
+          lifePatnerEducationController: TextEditingController(
+              text: i["member_child_partner_education"].toString()),
+          marriageDateController: TextEditingController(
+              text: i["member_child_marriage_date"].toString()),
+          lifePartnerRasiController: TextEditingController(
+              text: UtilsFunctions.getRasiTamilName(
+                  rasi: i["member_child_partner_rasi"].toString())),
+          lifePartnerNatchathiramController: TextEditingController(
+              text: UtilsFunctions.getNatchathiramTamilName(
+                  natchathiram:
+                      i["member_child_partner_natchathiram"].toString())),
+          lifePartnerDobController: TextEditingController(
+              text: i["member_child_partner_birth_date"].toString()),
+          childGender: i["member_child_gender"].toString(),
+          childMarrigeStatus: i["member_child_marriage_status"].toString(),
+          selectedChildJob: i["member_child_job"].toString(),
+          selectedChildRasi: i["member_child_rasi"].toString(),
+          selectedChildNatchathiram: i["member_child_natchathiram"].toString(),
+          selectedLifePartnerRasi: i["member_child_partner_rasi"].toString(),
+          selectedLifePartnerNatchathiram:
+              i["member_child_partner_natchathiram"].toString(),
+        ),
+      );
+    }
+  }
+
+  _addNewChild() {
+    selectedChildPhoto.add(null);
+    childList.add(
+      ChildModel(
+        id: null,
+        profilePhotoEdit: false,
+        childNameController: TextEditingController(),
+        childEducationController: TextEditingController(),
+        childJobController: TextEditingController(),
+        childInitialController: TextEditingController(),
+        childDobController: TextEditingController(),
+        childRasiController: TextEditingController(),
+        childNatchathiramController: TextEditingController(),
+        childMobileNumberController: TextEditingController(),
+        lifePartnerNameController: TextEditingController(),
+        lifePatnerEducationController: TextEditingController(),
+        marriageDateController: TextEditingController(),
+        lifePartnerRasiController: TextEditingController(),
+        lifePartnerNatchathiramController: TextEditingController(),
+        lifePartnerDobController: TextEditingController(),
+        childGender: null,
+        selectedChildJob: null,
+        childMarrigeStatus: null,
+        selectedChildRasi: null,
+        selectedChildNatchathiram: null,
+        selectedLifePartnerRasi: null,
+        selectedLifePartnerNatchathiram: null,
+      ),
+    );
+    setState(() {});
+  }
+
+  //***************** Submit *********************/
+  _saveProfile() async {
+    try {
+      futureLoading(context);
+
+      var memberId = await Db.getData(type: UserData.memberId);
+      var memberName = await Db.getData(type: UserData.memberName);
+      Map<String, dynamic> updateData = {};
+
+      if (_tabController?.index == 0) {
+        updateData = {
+          "type": "personal",
+          "update_member_id": memberId,
+          "date_of_birth": "",
+          "rasi": _selectedRasi,
+          "natchathiram": _selectedNatchathiram,
+          "profession_id": _selectedProfessionId,
+          "wife_name": _wifeName.text,
+          "wife_education": _wifeEducation.text,
+          "wife_date_of_birth": "",
+          "wife_rasi": _selectedWifeRasi,
+          "wife_natchathiram": _selectedWifeNatchathiram,
+          "marriage_date": "",
+          "phone_number": _phoneNumber.text,
+          "mobile_number": _mobileNumber.text,
+          "aadhaar_number": _adhaarNumber.text,
+          "creator": memberId,
+          "creator_name": memberName,
+        };
+      } else if (_tabController?.index == 1) {
+        updateData = {
+          "type": "address",
+          "update_member_id": memberId,
+          "address": _address.text,
+          "city": _city.text,
+          "pincode": _pincode.text,
+          "state": _state.text,
+          "country": _country.text,
+          "company_name": _companyName.text,
+          "remarks": _remarks.text,
+          "member_history": _history.text,
+          "creator": memberId,
+          "creator_name": memberName,
+        };
+      } else if (_tabController?.index == 3) {
+        updateData = {
+          "type": "child",
+          "update_member_id": memberId,
+          "children": [],
+          "creator": memberId,
+          "creator_name": memberName,
+        };
+
+        var childMapDetails = [];
+
+        for (var i = 0; i < childList.length; i++) {
+          var childDetails = {
+            "member_child${i}_id": childList[i].id ?? "",
+            "member_child${i}_initial":
+                childList[i].childInitialController.text,
+            "member_child${i}_name": childList[i].childNameController.text,
+            "member_child${i}_gender": childList[i].childGender ?? "",
+            "member_child${i}_birth_date": childList[i].childDobController.text,
+            "member_child${i}_rasi": childList[i].selectedChildRasi ?? "",
+            "member_child${i}_natchathiram":
+                childList[i].selectedChildNatchathiram ?? "",
+            "member_child${i}_education":
+                childList[i].childEducationController.text,
+            "member_child${i}_job": childList[i].selectedChildJob,
+            "member_child${i}_marriage_status":
+                childList[i].childMarrigeStatus ?? "",
+            "member_child${i}_mobile_number":
+                childList[i].childMobileNumberController.text,
+            "member_child${i}_photo": "",
+          };
+
+          childDetails["member_child${i}_partner_name"] =
+              childList[i].lifePartnerNameController.text;
+          childDetails["member_child${i}_partner_education"] =
+              childList[i].lifePatnerEducationController.text;
+          childDetails["member_child${i}_partner_birth_date"] =
+              childList[i].lifePartnerDobController.text;
+          childDetails["member_child${i}_marriage_date"] =
+              childList[i].marriageDateController.text;
+          childDetails["member_child${i}_partner_rasi"] =
+              childList[i].selectedLifePartnerRasi ?? "";
+          childDetails["member_child${i}_partner_natchathiram"] =
+              childList[i].selectedLifePartnerNatchathiram ?? "";
+
+          childMapDetails.add(childDetails);
+        }
+
+        updateData["children"] = childMapDetails;
+      }
+
+      await ProfileFunctions.updateProfile(query: updateData).then((value) {
+        Navigator.pop(context);
+        Snackbar.showSnackBar(context,
+            content: "Updated Successfully", isSuccess: true);
+      });
+    } catch (e) {
+      Navigator.pop(context);
+      Snackbar.showSnackBar(context, content: e.toString(), isSuccess: false);
+    }
+  }
 
   //************** Variables ****************/
   final TextEditingController _memberName = TextEditingController();
@@ -1940,4 +2082,8 @@ class _ProfileEditState extends State<ProfileEdit>
   File? _selectedFamilyPhoto1;
   File? _selectedFamilyPhoto2;
   File? _selectedFamilyPhoto3;
+
+  List<ChildModel> childList = [];
+  List<File?> selectedChildPhoto = [];
+  TabController? _tabController;
 }

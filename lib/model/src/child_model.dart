@@ -18,6 +18,7 @@ class ChildModel {
   TextEditingController lifePartnerDobController;
   String? childGender;
   String? childMarrigeStatus;
+  String? selectedChildJob;
   String? selectedChildRasi;
   String? selectedChildNatchathiram;
   String? selectedLifePartnerRasi;
@@ -41,6 +42,7 @@ class ChildModel {
     required this.lifePartnerNatchathiramController,
     required this.childGender,
     required this.childMarrigeStatus,
+    required this.selectedChildJob,
     required this.selectedChildRasi,
     required this.selectedChildNatchathiram,
     required this.selectedLifePartnerRasi,

@@ -7,6 +7,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '/functions/functions.dart';
@@ -221,6 +222,20 @@ class _LoginState extends State<Login> {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(height: 10),
+                                TextButton.icon(
+                                  icon: SvgPicture.asset(SvgAssets.info),
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        CupertinoPageRoute(builder: (context) {
+                                      return const Contact();
+                                    }));
+                                  },
+                                  label: const Text(
+                                    "Need account?",
+                                    style: TextStyle(color: Color(0xff818589)),
+                                  ),
+                                )
                               ],
                             ),
                           ),

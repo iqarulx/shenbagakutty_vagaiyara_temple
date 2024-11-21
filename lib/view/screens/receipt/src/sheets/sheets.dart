@@ -5,3 +5,4 @@ export 'src/non_member.dart';
 export 'src/r_category.dart';
 export 'src/r_type.dart';
 export 'src/r_t_f_c.dart';
+export 'src/creator_member.dart';

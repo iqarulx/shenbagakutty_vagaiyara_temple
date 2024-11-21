@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import '/model/model.dart';
 import '/view/view.dart';
 
-class ListingMember extends StatefulWidget {
-  final List<MemberModel> query;
-  const ListingMember({super.key, required this.query});
+class CreatorMember extends StatefulWidget {
+  final List<CreatorMemberModel> query;
+  const CreatorMember({super.key, required this.query});
   @override
-  State<ListingMember> createState() => _ListingMemberState();
+  State<CreatorMember> createState() => _CreatorMemberState();
 }
 
-class _ListingMemberState extends State<ListingMember> {
+class _CreatorMemberState extends State<CreatorMember> {
   TextEditingController searchForm = TextEditingController();
-  List<MemberModel> data = [];
-  List<MemberModel> allData = [];
+  List<CreatorMemberModel> data = [];
+  List<CreatorMemberModel> allData = [];
   Future? dataHandler;
 
   void resetSearch() {
@@ -22,9 +22,8 @@ class _ListingMemberState extends State<ListingMember> {
   }
 
   searchSite() {
-    List<MemberModel> filteredList = allData.where((site) {
-      return site.mobileNumber.contains(searchForm.text.toLowerCase()) ||
-          site.name.contains(searchForm.text.toLowerCase()) ||
+    List<CreatorMemberModel> filteredList = allData.where((site) {
+      return site.name.contains(searchForm.text.toLowerCase()) ||
           site.name.contains(searchForm.text.toUpperCase());
     }).toList();
     setState(() {
@@ -42,10 +41,9 @@ class _ListingMemberState extends State<ListingMember> {
     try {
       for (var i in widget.query) {
         data.add(
-          MemberModel(
+          CreatorMemberModel(
             id: i.id.toString(),
             name: i.name.toString(),
-            mobileNumber: i.mobileNumber.toString(),
           ),
         );
       }
@@ -117,12 +115,6 @@ class _ListingMemberState extends State<ListingMember> {
                           title: Text(
                             data[index].name,
                             style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          subtitle: Text(
-                            data[index].mobileNumber.isNotEmpty
-                                ? data[index].mobileNumber
-                                : "-",
-                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                           leading: Container(
                             height: 25,

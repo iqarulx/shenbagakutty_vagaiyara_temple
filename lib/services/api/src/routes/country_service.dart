@@ -11,7 +11,6 @@ class CountryService {
     try {
       final queryParameters = {"country_listing": ""};
       final uri = Uri.parse("$_apiUrl/$_route");
-      // print(json.encode(queryParameters));
       final response = await http.post(uri, body: json.encode(queryParameters));
       if (response.statusCode == 200) {
         if (response.body.isNotEmpty) {

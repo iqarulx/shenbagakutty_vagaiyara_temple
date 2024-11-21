@@ -1,4 +1,4 @@
-import 'package:shenbagakutty_vagaiyara/services/services.dart';
+import '/services/services.dart';
 
 class MandapamFunctions {
   static Future<Map<String, dynamic>> getMandapams() async {

@@ -1,6 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shenbagakutty_vagaiyara/constants/src/enum.dart';
-
+import '/constants/constants.dart';
 import '/model/model.dart';
 
 class Db {
@@ -48,7 +47,6 @@ class Db {
 
   static Future<bool?> getRV() async {
     var cn = await connect();
-    print(cn.getBool('receipt_volunteer'));
     return cn.getBool('receipt_volunteer');
   }
 

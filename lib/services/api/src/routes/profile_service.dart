@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import '/constants/constants.dart';
 import '/services/services.dart';
 import 'package:http/http.dart' as http;
@@ -35,15 +34,13 @@ class ProfileService {
     }
   }
 
-  static Future updateProfile({required Map<String, dynamic> query}) async {
+  static Future<Map<String, dynamic>> updateProfile(
+      {required Map<String, dynamic> query}) async {
     try {
       final queryParameters = query;
       final uri = Uri.parse("$_apiUrl/$_routeUpdate");
 
       final response = await http.post(uri, body: json.encode(queryParameters));
-      log(uri.toString());
-      log(json.encode(queryParameters));
-
       if (response.statusCode == 200) {
         if (response.body.isNotEmpty) {
           var d = response.body; // Data

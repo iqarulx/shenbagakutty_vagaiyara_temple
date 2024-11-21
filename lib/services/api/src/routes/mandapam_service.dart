@@ -22,8 +22,6 @@ class MandapamService {
       };
 
       final uri = Uri.parse("$_apiUrl/$_routeBooking");
-      print(json.encode(queryParameters));
-
       final response = await http.post(uri, body: json.encode(queryParameters));
       if (response.statusCode == 200) {
         if (response.body.isNotEmpty) {

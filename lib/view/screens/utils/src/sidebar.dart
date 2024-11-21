@@ -45,8 +45,8 @@ class _SidebarState extends State<Sidebar> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          GestureDetector(
-            onTap: () async {
+          TextButton(
+            onPressed: () async {
               var uri =
                   "https://sridemoapps.in/mahendran2022/temple/privacypolicy.php";
               await launchUrl(Uri.parse(uri));
@@ -60,17 +60,17 @@ class _SidebarState extends State<Sidebar> {
                   ),
             ),
           ),
-          GestureDetector(
-            onDoubleTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const TermsAndConditions(),
-              //   ),
-              // );
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => const Contact(),
+                ),
+              );
             },
             child: Text(
-              'Terms and Conditions',
+              'Contact',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
@@ -220,7 +220,9 @@ class _SidebarState extends State<Sidebar> {
                 Column(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.whiteColor,
@@ -462,8 +464,7 @@ class _SidebarState extends State<Sidebar> {
   }
 
   Future<bool> _checkReceiptVolunteer() async {
-    // return await Db.getRV() ?? false;
-    return true;
+    return await Db.getRV() ?? false;
   }
 
   InkWell logoutButton() {

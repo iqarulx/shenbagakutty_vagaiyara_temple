@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shenbagakutty_vagaiyara/model/model.dart';
-import 'package:shenbagakutty_vagaiyara/view/view.dart';
+import '/model/model.dart';
+import '/view/view.dart';
 
 class DetailView extends StatefulWidget {
   final ReceiptModel model;
