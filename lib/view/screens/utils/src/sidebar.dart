@@ -9,6 +9,7 @@ import '/view/view.dart';
 import '/constants/constants.dart';
 import '/services/services.dart';
 import '/utils/utils.dart';
+import 'trademark.dart';
 
 class Sidebar extends StatefulWidget {
   final void Function() refresh;
@@ -31,6 +32,7 @@ class _SidebarState extends State<Sidebar> {
           child: Column(
             children: [
               listOptions(),
+              const Trademark(),
               policyOption(),
               logoutButton(),
             ],
